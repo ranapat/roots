@@ -29,6 +29,10 @@ import org.ranapat.roots.tools.Dispenser
 import timber.log.Timber
 
 class MainActivity : ComponentActivity(), Dispenser {
+    private class ApiResponse(
+        @JsonProperty("status") val status: String,
+        @JsonProperty("response") val response: String
+    )
     private val getApiResponse by lazy { Get.fromJson("https://pit.ranapat.org/drop/get.json", ApiResponse::class.java) }
 
     override val compositeDisposable
@@ -113,8 +117,3 @@ fun GreetingPreview() {
         Greeting("Android")
     }
 }
-
-class ApiResponse(
-    @JsonProperty("status") val status: String,
-    @JsonProperty("response") val response: String
-)

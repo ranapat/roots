@@ -11,19 +11,19 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 @RunWith(MockitoJUnitRunner::class)
-class RequestNotSuccessfulExceptionTest {
+class RequestMissingBodyExceptionTest {
 
     @Test
     fun `shall construct`() {
         val response = mock<Response> {
-            on { code } doReturn 400
+            on { code } doReturn 200
         }
-        val exception = RequestNotSuccessfulException("url", Method.GET, response)
+        val exception = RequestMissingBodyException("url", Method.GET, response)
 
         assertThat(exception.url, `is`(equalTo("url")))
         assertThat(exception.method, `is`(equalTo(Method.GET)))
         assertThat(exception.response, `is`(equalTo(response)))
-        assertThat(exception.message, `is`(equalTo("GET request to [ url ] failed with status code 400")))
+        assertThat(exception.message, `is`(equalTo("GET request to [ url ] passed with status code 200, but has empty body")))
     }
 
 }

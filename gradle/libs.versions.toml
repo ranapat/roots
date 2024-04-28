@@ -20,6 +20,8 @@ junitVersion = "1.1.5"
 mockitoCore = "5.11.0"
 mockitoKotlin = "5.3.1"
 mocck = "1.13.10"
+json = "20140107"
+
 
 timber = "5.0.1"
 
@@ -42,6 +44,7 @@ material = { group = "com.google.android.material", name = "material", version.r
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttpBom" }
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
 okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor" }
+okhttp-mock-webserver = { group = "com.squareup.okhttp3", name = "mockwebserver" }
 
 rx-java = { group = "io.reactivex.rxjava3", name = "rxjava", version.ref = "rxJava" }
 rx-java-android = { group = "io.reactivex.rxjava3", name = "rxandroid", version.ref = "rxAndroid" }
@@ -55,7 +58,8 @@ androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "j
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockitoCore" }
 mockito-kotlin = { group = "org.mockito.kotlin", name = "mockito-kotlin", version.ref = "mockitoKotlin" }
-mockk = { group = "io.mockk", name="mockk", version.ref="mocck" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mocck" }
+json = { group = "org.json", name = "json", version.ref = "json" }
 
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 

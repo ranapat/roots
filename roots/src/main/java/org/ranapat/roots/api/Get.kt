@@ -6,9 +6,8 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.ranapat.roots.ObjectMapperProvider
-import java.io.IOException
 
-object Get {
+object Get : BaseApi {
     fun <T : Any> fromJson(
         url: String, valueType: Class<T>,
         okHttpClient: OkHttpClient? = null,
@@ -18,26 +17,40 @@ object Get {
         return Maybe
             .fromCallable<T> {
                 val client = okHttpClient ?: OkHttpClientProvider.client
-                val builder: Request.Builder = Request.Builder()
-                    .url(url)
-                headers?.let { headers ->
-                    headers.forEach { (name, value) ->
-                        builder.addHeader(name, value)
-                    }
-                }
-                val request: Request = builder.build()
-                try {
-                    val response: Response = client.newCall(request).execute()
-                    if (response.isSuccessful) {
-                        return@fromCallable normaliseResponse?.invoke(response)
-                            ?: ObjectMapperProvider.mapper.readValue(response.body?.string(), valueType)
-                    } else {
-                        throw RequestNotSuccessfulException(url, Method.GET, response)
-                    }
-                } catch (e: IOException) {
-                    throw e
-                }
+                val request: Request = Request.Builder().apply {
+                    url(url)
+                    applyHeaders(this, headers)
+                }.build()
+
+                return@fromCallable toTyped(
+                    client.newCall(request).execute(),
+                    valueType, normaliseResponse
+                )
             }
             .subscribeOn(Schedulers.io())
+    }
+
+    @Throws(
+        RequestNotSuccessfulException::class,
+        RequestMissingBodyException::class
+    )
+    private fun <T> toTyped(
+        response: Response, valueType: Class<T>,
+        normaliseResponse: NormaliseResponse<T>?
+    ): T {
+        if (response.isSuccessful) {
+            val body = response.body
+            if (body != null) {
+                return if (normaliseResponse != null) {
+                    normaliseResponse.invoke(response)
+                } else {
+                    ObjectMapperProvider.mapper.readValue(body.string(), valueType)
+                }
+            } else {
+                throw RequestMissingBodyException(response.request.url.toString(), Method.GET, response)
+            }
+        } else {
+            throw RequestNotSuccessfulException(response.request.url.toString(), Method.GET, response)
+        }
     }
 }

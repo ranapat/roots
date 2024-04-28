@@ -55,4 +55,6 @@ dependencies {
     testImplementation libs.mockito.core
     testImplementation libs.mockito.kotlin
     testImplementation libs.mockk
+    testImplementation libs.okhttp.mock.webserver
+    testImplementation libs.json
 }

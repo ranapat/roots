@@ -23,13 +23,13 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonMappingException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import org.ranapat.roots.api.getFromJson
+import org.ranapat.roots.api.Get
 import org.ranapat.roots.example.ui.theme.RootsTheme
 import org.ranapat.roots.tools.Dispenser
 import timber.log.Timber
 
 class MainActivity : ComponentActivity(), Dispenser {
-    private val getApiResponse by lazy { getFromJson("https://pit.ranapat.org/drop/get.json", ApiResponse::class.java) }
+    private val getApiResponse by lazy { Get.fromJson("https://pit.ranapat.org/drop/get.json", ApiResponse::class.java) }
 
     override val compositeDisposable
         get() = CompositeDisposable()

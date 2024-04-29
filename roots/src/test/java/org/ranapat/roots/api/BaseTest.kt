@@ -20,7 +20,7 @@ import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
 @RunWith(MockitoJUnitRunner::class)
-class BaseApiTest {
+class BaseTest {
     private class ApiResponse(
         @JsonProperty("status") val status: String,
         @JsonProperty("response") val response: String
@@ -30,7 +30,7 @@ class BaseApiTest {
     fun `shall set headers`() {
         val builder: Request.Builder = mock()
 
-        BaseApi.setHeaders(builder, mapOf(
+        Base.setHeaders(builder, mapOf(
             "key1" to "value1"
         ))
 
@@ -42,7 +42,7 @@ class BaseApiTest {
     fun `shall not set headers`() {
         val builder: Request.Builder = mock()
 
-        BaseApi.setHeaders(builder, null)
+        Base.setHeaders(builder, null)
 
         verify(builder, times(0)).addHeader(any<String>(), any<String>())
     }
@@ -53,7 +53,7 @@ class BaseApiTest {
             on { isSuccessful } doReturn true
         }
 
-        val result = BaseApi.ensureSuccessful(response)
+        val result = Base.ensureSuccessful(response)
 
         assertThat(result, `is`(equalTo(response)))
     }
@@ -71,7 +71,7 @@ class BaseApiTest {
             on { request } doReturn responseRequest
         }
 
-        BaseApi.ensureSuccessful(response)
+        Base.ensureSuccessful(response)
     }
 
     @Test
@@ -85,7 +85,7 @@ class BaseApiTest {
             on { body } doReturn responseBody
         }
 
-        val result = BaseApi.toTyped(response, ApiResponse::class.java, null)
+        val result = Base.toTyped(response, ApiResponse::class.java, null)
 
         assertThat(result.status, `is`(equalTo("ok")))
         assertThat(result.response, `is`(equalTo("good")))
@@ -102,7 +102,7 @@ class BaseApiTest {
             on { body } doReturn responseBody
         }
 
-        val result = BaseApi.toTyped(
+        val result = Base.toTyped(
             response, ApiResponse::class.java,
             object : NormaliseResponse<ApiResponse> {
                 override fun invoke(response: Response): ApiResponse {
@@ -132,7 +132,7 @@ class BaseApiTest {
             on { request } doReturn responseRequest
         }
 
-        BaseApi.toTyped(
+        Base.toTyped(
             response, ApiResponse::class.java,
             object : NormaliseResponse<ApiResponse> {
                 override fun invoke(response: Response): ApiResponse {

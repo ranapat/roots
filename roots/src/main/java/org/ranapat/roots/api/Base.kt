@@ -4,7 +4,7 @@ import okhttp3.Request
 import okhttp3.Response
 import org.ranapat.roots.ObjectMapperProvider
 
-object BaseApi {
+object Base {
     fun setHeaders(builder: Request.Builder, headers: Map<String, String>?) {
         headers?.forEach { (name, value) ->
             builder.addHeader(name, value)

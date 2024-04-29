@@ -5,8 +5,8 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
-import org.ranapat.roots.api.BaseApi.ensureSuccessful
-import org.ranapat.roots.api.BaseApi.setHeaders
+import org.ranapat.roots.api.Base.ensureSuccessful
+import org.ranapat.roots.api.Base.setHeaders
 
 object Get {
     fun fromJson(

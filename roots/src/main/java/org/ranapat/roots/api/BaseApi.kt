@@ -4,7 +4,7 @@ import okhttp3.Request
 import okhttp3.Response
 import org.ranapat.roots.ObjectMapperProvider
 
-abstract class BaseApi {
+object BaseApi {
     fun setHeaders(builder: Request.Builder, headers: Map<String, String>?) {
         headers?.forEach { (name, value) ->
             builder.addHeader(name, value)
@@ -12,26 +12,32 @@ abstract class BaseApi {
     }
 
     @Throws(
-        RequestNotSuccessfulException::class,
+        RequestNotSuccessfulException::class
+    )
+    fun ensureSuccessful(response: Response): Response {
+        if (response.isSuccessful) {
+            return response
+        } else {
+            throw RequestNotSuccessfulException(response.request.url.toString(), response)
+        }
+    }
+
+    @Throws(
         RequestMissingBodyException::class
     )
     fun <T> toTyped(
         response: Response, valueType: Class<T>,
         normaliseResponse: NormaliseResponse<T>?
     ): T {
-        if (response.isSuccessful) {
-            val body = response.body
-            if (body != null) {
-                return if (normaliseResponse != null) {
-                    normaliseResponse.invoke(response)
-                } else {
-                    ObjectMapperProvider.mapper.readValue(body.string(), valueType)
-                }
+        val body = response.body
+        if (body != null) {
+            return if (normaliseResponse != null) {
+                normaliseResponse.invoke(response)
             } else {
-                throw RequestMissingBodyException(response.request.url.toString(), Method.GET, response)
+                ObjectMapperProvider.mapper.readValue(body.string(), valueType)
             }
         } else {
-            throw RequestNotSuccessfulException(response.request.url.toString(), Method.GET, response)
+            throw RequestMissingBodyException(response.request.url.toString(), Method.GET, response)
         }
     }
 }

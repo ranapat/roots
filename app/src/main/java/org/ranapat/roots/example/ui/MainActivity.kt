@@ -24,6 +24,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.ranapat.roots.api.Get
+import org.ranapat.roots.api.like
 import org.ranapat.roots.example.ui.theme.RootsTheme
 import org.ranapat.roots.tools.Dispenser
 import timber.log.Timber
@@ -33,7 +34,8 @@ class MainActivity : ComponentActivity(), Dispenser {
         @JsonProperty("status") val status: String,
         @JsonProperty("response") val response: String
     )
-    private val getApiResponse by lazy { Get.fromJson("https://pit.ranapat.org/drop/get.json", ApiResponse::class.java) }
+    private val getApiResponse1 by lazy { Get.fromJson("https://pit.ranapat.org/drop/get.json", ApiResponse::class.java) }
+    private val getApiResponse2 by lazy { Get.fromJson("https://pit.ranapat.org/drop/get.json").like(ApiResponse::class.java) }
 
     override val compositeDisposable
         get() = CompositeDisposable()
@@ -83,7 +85,7 @@ class MainActivity : ComponentActivity(), Dispenser {
 
     private fun example() {
         subscription(
-            getApiResponse
+            getApiResponse1
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ data ->
                 try {
@@ -98,6 +100,23 @@ class MainActivity : ComponentActivity(), Dispenser {
             }) { throwable ->
                 Timber.e(throwable)
             }
+        )
+        subscription(
+            getApiResponse2
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ data ->
+                    try {
+                        Timber.d(data.status + " " + data.response)
+                    } catch (e: JsonProcessingException) {
+                        Timber.e(e)
+                    } catch (e: JsonMappingException) {
+                        Timber.e(e)
+                    } catch (e: Throwable) {
+                        Timber.e(e)
+                    }
+                }) { throwable ->
+                    Timber.e(throwable)
+                }
         )
     }
 }

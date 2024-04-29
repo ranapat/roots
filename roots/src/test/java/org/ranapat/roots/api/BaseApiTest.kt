@@ -30,10 +30,7 @@ class BaseApiTest {
     fun `shall set headers`() {
         val builder: Request.Builder = mock()
 
-        val instance: BaseApi = object : BaseApi() {
-        }
-
-        instance.setHeaders(builder, mapOf(
+        BaseApi.setHeaders(builder, mapOf(
             "key1" to "value1"
         ))
 
@@ -45,12 +42,36 @@ class BaseApiTest {
     fun `shall not set headers`() {
         val builder: Request.Builder = mock()
 
-        val instance: BaseApi = object : BaseApi() {
-        }
-
-        instance.setHeaders(builder, null)
+        BaseApi.setHeaders(builder, null)
 
         verify(builder, times(0)).addHeader(any<String>(), any<String>())
+    }
+
+    @Test
+    fun `shall ensure successful`() {
+        val response: Response = mock {
+            on { isSuccessful } doReturn true
+        }
+
+        val result = BaseApi.ensureSuccessful(response)
+
+        assertThat(result, `is`(equalTo(response)))
+    }
+
+    @Test(expected = RequestNotSuccessfulException::class)
+    fun `shall not ensure successful`() {
+        val responseRequestUrl: HttpUrl = mock {
+            on { toString() } doReturn "http://localhost"
+        }
+        val responseRequest: Request = mock {
+            on { url } doReturn responseRequestUrl
+        }
+        val response: Response = mock {
+            on { isSuccessful } doReturn false
+            on { request } doReturn responseRequest
+        }
+
+        BaseApi.ensureSuccessful(response)
     }
 
     @Test
@@ -61,14 +82,10 @@ class BaseApiTest {
             }
         }
         val response: Response = mock {
-            on { isSuccessful } doReturn true
             on { body } doReturn responseBody
         }
 
-        val instance: BaseApi = object : BaseApi() {
-        }
-
-        val result = instance.toTyped(response, ApiResponse::class.java, null)
+        val result = BaseApi.toTyped(response, ApiResponse::class.java, null)
 
         assertThat(result.status, `is`(equalTo("ok")))
         assertThat(result.response, `is`(equalTo("good")))
@@ -82,18 +99,14 @@ class BaseApiTest {
             }
         }
         val response: Response = mock {
-            on { isSuccessful } doReturn true
             on { body } doReturn responseBody
         }
 
-        val instance: BaseApi = object : BaseApi() {
-        }
-
-        val result = instance.toTyped(
+        val result = BaseApi.toTyped(
             response, ApiResponse::class.java,
             object : NormaliseResponse<ApiResponse> {
                 override fun invoke(response: Response): ApiResponse {
-                    val json = JSONObject(response.body?.string())
+                    val json = JSONObject(response.body?.string() ?: "")
                     return ApiResponse(
                         "wow-" + json.getString("status"),
                         "wow-" + json.getString("response")
@@ -106,7 +119,7 @@ class BaseApiTest {
         assertThat(result.response, `is`(equalTo("wow-good")))
     }
 
-    @Test(expected = RequestNotSuccessfulException::class)
+    @Test(expected = RequestMissingBodyException::class)
     fun `shall not get from json - case 1`() {
         val responseRequestUrl: HttpUrl = mock {
             on { toString() } doReturn "http://localhost"
@@ -115,39 +128,15 @@ class BaseApiTest {
             on { url } doReturn responseRequestUrl
         }
         val response: Response = mock {
-            on { code } doReturn 400
-            on { isSuccessful } doReturn false
-            on { request } doReturn responseRequest
-        }
-
-        val instance: BaseApi = object : BaseApi() {
-        }
-
-        instance.toTyped(response, ApiResponse::class.java, null)
-    }
-
-    @Test(expected = RequestMissingBodyException::class)
-    fun `shall not get from json - case 2`() {
-        val responseRequestUrl: HttpUrl = mock {
-            on { toString() } doReturn "http://localhost"
-        }
-        val responseRequest: Request = mock {
-            on { url } doReturn responseRequestUrl
-        }
-        val response: Response = mock {
-            on { isSuccessful } doReturn true
             on { body } doReturn null
             on { request } doReturn responseRequest
         }
 
-        val instance: BaseApi = object : BaseApi() {
-        }
-
-        instance.toTyped(
+        BaseApi.toTyped(
             response, ApiResponse::class.java,
             object : NormaliseResponse<ApiResponse> {
                 override fun invoke(response: Response): ApiResponse {
-                    val json = JSONObject(response.body?.string())
+                    val json = JSONObject(response.body?.string() ?: "")
                     return ApiResponse(
                         "wow-" + json.getString("status"),
                         "wow-" + json.getString("response")

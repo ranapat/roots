@@ -25,7 +25,7 @@ import org.mockito.kotlin.mock
 import java.io.IOException
 
 @RunWith(MockitoJUnitRunner::class)
-class GetTest {
+class GetFromJsonTest {
     private class ApiResponse(
         @JsonProperty("status") val status: String,
         @JsonProperty("response") val response: String

@@ -17,7 +17,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 @RunWith(MockitoJUnitRunner::class)
-class ConverterTest {
+class RxExtensionTest {
     private class ApiResponse(
         @JsonProperty("status") val status: String,
         @JsonProperty("response") val response: String

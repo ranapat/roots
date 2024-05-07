@@ -32,7 +32,7 @@ import org.ranapat.roots.api.NormaliseResponse
 import org.ranapat.roots.api.Post
 import org.ranapat.roots.api.like
 import org.ranapat.roots.example.ui.theme.RootsTheme
-import org.ranapat.roots.toTyped
+import org.ranapat.roots.converter.toTyped
 import org.ranapat.roots.tools.Dispenser
 import timber.log.Timber
 

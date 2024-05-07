@@ -9,7 +9,7 @@ import org.ranapat.roots.api.Base.ensureSuccessful
 import org.ranapat.roots.api.Base.setHeaders
 
 object Get {
-    fun fromJson(
+    fun json(
         url: String,
         okHttpClient: OkHttpClient? = null,
         headers: Map<String, String>? = null
@@ -27,10 +27,10 @@ object Get {
             .subscribeOn(Schedulers.io())
     }
 
-    fun <T : Any> fromJson(
+    fun <T : Any> json(
         url: String, valueType: Class<T>,
         okHttpClient: OkHttpClient? = null,
         headers: Map<String, String>? = null,
         normaliseResponse: NormaliseResponse<T>? = null
-    ): Maybe<T> = fromJson(url, okHttpClient, headers).like(valueType, normaliseResponse)
+    ): Maybe<T> = json(url, okHttpClient, headers).like(valueType, normaliseResponse)
 }

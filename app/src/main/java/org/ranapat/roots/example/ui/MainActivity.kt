@@ -34,8 +34,8 @@ class MainActivity : ComponentActivity(), Dispenser {
         @JsonProperty("status") val status: String,
         @JsonProperty("response") val response: String
     )
-    private val getApiResponse1 by lazy { Get.fromJson("https://pit.ranapat.org/drop/get.json", ApiResponse::class.java) }
-    private val getApiResponse2 by lazy { Get.fromJson("https://pit.ranapat.org/drop/get.json").like(ApiResponse::class.java) }
+    private val getApiResponse1 by lazy { Get.json("https://pit.ranapat.org/drop/get.json", ApiResponse::class.java) }
+    private val getApiResponse2 by lazy { Get.json("https://pit.ranapat.org/drop/get.json").like(ApiResponse::class.java) }
 
     override val compositeDisposable
         get() = CompositeDisposable()

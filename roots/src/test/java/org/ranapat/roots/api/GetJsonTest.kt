@@ -22,7 +22,7 @@ import org.mockito.kotlin.mock
 import java.io.IOException
 
 @RunWith(MockitoJUnitRunner::class)
-class GetFromJsonTest {
+class GetJsonTest {
     @Test
     fun `shall get from - case 1`() {
         val server = MockWebServer()
@@ -33,7 +33,7 @@ class GetFromJsonTest {
             MockResponse().setBody(response)
         )
 
-        val testObserver: TestObserver<Response> = Get.fromJson(baseUrl.toString()).test()
+        val testObserver: TestObserver<Response> = Get.json(baseUrl.toString()).test()
         testObserver.await()
 
         testObserver.assertValueCount(1)
@@ -60,7 +60,7 @@ class GetFromJsonTest {
             }
         }
 
-        val testObserver: TestObserver<Response> = Get.fromJson(
+        val testObserver: TestObserver<Response> = Get.json(
             "https://localhost",
             okHttpClient = okHttpClient
         ).test()
@@ -84,7 +84,7 @@ class GetFromJsonTest {
                 .setBody(response)
         )
 
-        val testObserver: TestObserver<Response> = Get.fromJson(baseUrl.toString()).test()
+        val testObserver: TestObserver<Response> = Get.json(baseUrl.toString()).test()
         testObserver.await()
 
         testObserver.assertValueCount(0)
@@ -108,7 +108,7 @@ class GetFromJsonTest {
             MockResponse().setBody(response)
         )
 
-        val testObserver: TestObserver<Response> = Get.fromJson(
+        val testObserver: TestObserver<Response> = Get.json(
             baseUrl.toString(),
             okHttpClient = okHttpClient
         ).test()
@@ -144,7 +144,7 @@ class GetFromJsonTest {
             }
         }
 
-        val testObserver: TestObserver<Response> = Get.fromJson(
+        val testObserver: TestObserver<Response> = Get.json(
             "http://localhost",
             okHttpClient = okHttpClient
         ).test()

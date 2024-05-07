@@ -25,7 +25,7 @@ import org.mockito.kotlin.mock
 import java.io.IOException
 
 @RunWith(MockitoJUnitRunner::class)
-class GetFromJsonLikeTest {
+class GetJsonLikeTest {
     private class ApiResponse(
         @JsonProperty("status") val status: String,
         @JsonProperty("response") val response: String
@@ -41,7 +41,7 @@ class GetFromJsonLikeTest {
             MockResponse().setBody(response)
         )
 
-        val testObserver: TestObserver<ApiResponse> = Get.fromJson(baseUrl.toString(), ApiResponse::class.java).test()
+        val testObserver: TestObserver<ApiResponse> = Get.json(baseUrl.toString(), ApiResponse::class.java).test()
         testObserver.await()
 
         testObserver.assertValueCount(1)
@@ -75,7 +75,7 @@ class GetFromJsonLikeTest {
             }
         }
 
-        val testObserver: TestObserver<ApiResponse> = Get.fromJson(
+        val testObserver: TestObserver<ApiResponse> = Get.json(
             "https://localhost", ApiResponse::class.java,
             okHttpClient = okHttpClient
         ).test()
@@ -110,7 +110,7 @@ class GetFromJsonLikeTest {
             }
         }
 
-        val testObserver: TestObserver<ApiResponse> = Get.fromJson(
+        val testObserver: TestObserver<ApiResponse> = Get.json(
             "https://localhost", ApiResponse::class.java,
             okHttpClient = okHttpClient,
             normaliseResponse = object : NormaliseResponse<ApiResponse> {
@@ -144,7 +144,7 @@ class GetFromJsonLikeTest {
                 .setBody(response)
         )
 
-        val testObserver: TestObserver<ApiResponse> = Get.fromJson(baseUrl.toString(), ApiResponse::class.java).test()
+        val testObserver: TestObserver<ApiResponse> = Get.json(baseUrl.toString(), ApiResponse::class.java).test()
         testObserver.await()
 
         testObserver.assertValueCount(0)
@@ -163,7 +163,7 @@ class GetFromJsonLikeTest {
             MockResponse().setBody(response)
         )
 
-        val testObserver: TestObserver<ApiResponse> = Get.fromJson(baseUrl.toString(), ApiResponse::class.java).test()
+        val testObserver: TestObserver<ApiResponse> = Get.json(baseUrl.toString(), ApiResponse::class.java).test()
         testObserver.await()
 
         testObserver.assertValueCount(0)
@@ -187,7 +187,7 @@ class GetFromJsonLikeTest {
             MockResponse().setBody(response)
         )
 
-        val testObserver: TestObserver<ApiResponse> = Get.fromJson(
+        val testObserver: TestObserver<ApiResponse> = Get.json(
             baseUrl.toString(), ApiResponse::class.java,
             okHttpClient = okHttpClient
         ).test()
@@ -223,7 +223,7 @@ class GetFromJsonLikeTest {
             }
         }
 
-        val testObserver: TestObserver<ApiResponse> = Get.fromJson(
+        val testObserver: TestObserver<ApiResponse> = Get.json(
             "http://localhost", ApiResponse::class.java,
             okHttpClient = okHttpClient
         ).test()
@@ -257,7 +257,7 @@ class GetFromJsonLikeTest {
             }
         }
 
-        val testObserver: TestObserver<ApiResponse> = Get.fromJson(
+        val testObserver: TestObserver<ApiResponse> = Get.json(
             "https://localhost", ApiResponse::class.java,
             okHttpClient = okHttpClient,
             normaliseResponse = object : NormaliseResponse<ApiResponse> {

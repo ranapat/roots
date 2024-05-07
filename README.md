@@ -8,15 +8,15 @@ Roots, bloody roots ...
 
 Rx based data flow.
 
-More or less it is:
+More or less it is
 
 ```
 (1) Api >> (2) Cache >> (3) Consume
 ```
 
-but every step is optional and everything is interchangeable.
+with every step optional and interchangeable.
 
-More info later.
+### More info later.
 
 ## Resources
 

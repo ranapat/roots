@@ -18,24 +18,71 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonMappingException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.Response
+import org.json.JSONArray
 import org.ranapat.roots.api.Get
+import org.ranapat.roots.api.NormaliseResponse
+import org.ranapat.roots.api.Post
 import org.ranapat.roots.api.like
 import org.ranapat.roots.example.ui.theme.RootsTheme
+import org.ranapat.roots.toTyped
 import org.ranapat.roots.tools.Dispenser
 import timber.log.Timber
 
 class MainActivity : ComponentActivity(), Dispenser {
+    @JsonIgnoreProperties(ignoreUnknown = true)
     private class ApiResponse(
         @JsonProperty("status") val status: String,
         @JsonProperty("response") val response: String
     )
-    private val getApiResponse1 by lazy { Get.json("https://pit.ranapat.org/drop/get.json", ApiResponse::class.java) }
-    private val getApiResponse2 by lazy { Get.json("https://pit.ranapat.org/drop/get.json").like(ApiResponse::class.java) }
+    private val getApiResponse0 by lazy {
+        Get.json(
+            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
+            ApiResponse::class.java,
+            normaliseResponse = object: NormaliseResponse<ApiResponse> {
+                override fun invoke(response: Response): ApiResponse {
+                    return toTyped(
+                        JSONArray(response.body?.string()).getJSONObject(0).toString(),
+                        ApiResponse::class.java
+                    )
+                }
+            }
+        )
+    }
+    private val getApiResponse1 by lazy {
+        Get.json(
+            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/1",
+            ApiResponse::class.java
+        )
+    }
+    private val getApiResponse2 by lazy {
+        Get.json(
+            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2"
+        ).like(ApiResponse::class.java)
+    }
+
+    private val postApiResponse1 by lazy {
+        Post.json(
+            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
+            "{\"status\":\"predefined status (3)\", \"response\": \"predefined response (3)\"}",
+            ApiResponse::class.java,
+            "application/json; charset=utf-8".toMediaType()
+        )
+    }
+    private val postApiResponse2 by lazy {
+        Post.json(
+            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
+            "{\"status\":\"predefined status (4)\", \"response\": \"predefined response (4)\"}",
+            "application/json; charset=utf-8".toMediaType()
+        ).like(ApiResponse::class.java)
+    }
 
     override val compositeDisposable
         get() = CompositeDisposable()
@@ -85,11 +132,11 @@ class MainActivity : ComponentActivity(), Dispenser {
 
     private fun example() {
         subscription(
-            getApiResponse1
+            getApiResponse0
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ data ->
                 try {
-                    Timber.d(data.status + " " + data.response)
+                    Timber.d("Get0 :: " + data.status + " " + data.response)
                 } catch (e: JsonProcessingException) {
                     Timber.e(e)
                 } catch (e: JsonMappingException) {
@@ -102,11 +149,63 @@ class MainActivity : ComponentActivity(), Dispenser {
             }
         )
         subscription(
+            getApiResponse1
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ data ->
+                    try {
+                        Timber.d("Get1 :: " + data.status + " " + data.response)
+                    } catch (e: JsonProcessingException) {
+                        Timber.e(e)
+                    } catch (e: JsonMappingException) {
+                        Timber.e(e)
+                    } catch (e: Throwable) {
+                        Timber.e(e)
+                    }
+                }) { throwable ->
+                    Timber.e(throwable)
+                }
+        )
+        subscription(
             getApiResponse2
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ data ->
                     try {
-                        Timber.d(data.status + " " + data.response)
+                        Timber.d("Get2 :: " + data.status + " " + data.response)
+                    } catch (e: JsonProcessingException) {
+                        Timber.e(e)
+                    } catch (e: JsonMappingException) {
+                        Timber.e(e)
+                    } catch (e: Throwable) {
+                        Timber.e(e)
+                    }
+                }) { throwable ->
+                    Timber.e(throwable)
+                }
+        )
+
+        subscription(
+            postApiResponse1
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ data ->
+                    try {
+                        Timber.d("Post1 :: " + data.status + " " + data.response)
+                    } catch (e: JsonProcessingException) {
+                        Timber.e(e)
+                    } catch (e: JsonMappingException) {
+                        Timber.e(e)
+                    } catch (e: Throwable) {
+                        Timber.e(e)
+                    }
+                }) { throwable ->
+                    Timber.e(throwable)
+                }
+        )
+        subscription(
+            postApiResponse2
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ data ->
+                    try {
+                        Timber.d("Post2 :: " + data.status + " " + data.response)
                     } catch (e: JsonProcessingException) {
                         Timber.e(e)
                     } catch (e: JsonMappingException) {

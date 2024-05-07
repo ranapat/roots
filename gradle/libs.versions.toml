@@ -21,7 +21,7 @@ mockitoCore = "5.11.0"
 mockitoKotlin = "5.3.1"
 mocck = "1.13.10"
 json = "20140107"
-
+coveralls = "2.12.0"
 
 timber = "5.0.1"
 
@@ -68,3 +68,4 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
+coveralls = { id = "com.github.kt3k.coveralls", version.ref = "coveralls" }

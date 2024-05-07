@@ -1,6 +1,11 @@
 apply plugin: 'jacoco'
+apply plugin: 'com.github.kt3k.coveralls'
 jacoco {
     toolVersion = "0.8.11"
+}
+coveralls {
+    sourceDirs = subprojects.sourceSets.main.allSource.srcDirs.flatten()
+    jacocoReportPath 'build/reports/jacoco/testReleaseUnitTestCoverage/testReleaseUnitTestCoverage.xml'
 }
 project.afterEvaluate {
     // Grab all build types and product flavors

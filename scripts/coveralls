@@ -1,1 +1,1 @@
-./gradlew testReleaseUnitTestCoverage && CI=true COVERALLS_REPO_TOKEN=<token> ./gradlew coveralls
+./gradlew testReleaseUnitTestCoverage && CI=true COVERALLS_REPO_TOKEN=mJW7qZR3hQAll6hjOMstnTvaQT2Ts3Mjb ./gradlew coveralls

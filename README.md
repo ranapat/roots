@@ -16,7 +16,7 @@ More or less it is
 
 with every step optional and interchangeable.
 
-### More info later.
+### More documentation coming up later ...
 
 ## Resources
 

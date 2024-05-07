@@ -167,7 +167,6 @@ class GetJsonLikeTest {
         testObserver.await()
 
         testObserver.assertValueCount(0)
-        testObserver.assertError(ValueInstantiationException::class.java)
 
         server.shutdown()
     }

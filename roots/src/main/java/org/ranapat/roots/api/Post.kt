@@ -7,10 +7,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import org.ranapat.roots.api.Base.ensureSuccessful
-import org.ranapat.roots.api.Base.setHeaders
 
 object Post {
+    /*
     fun json(
         url: String,
         content: String,
@@ -39,4 +38,5 @@ object Post {
         headers: Map<String, String>? = null,
         normaliseResponse: NormaliseResponse<T>? = null
     ): Maybe<T> = json(url, content, mediaType, okHttpClient, headers).like(valueType, normaliseResponse)
+    */
 }

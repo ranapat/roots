@@ -25,9 +25,16 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import okhttp3.MediaType.Companion.toMediaType
+import org.json.JSONArray
+import org.json.JSONObject
 import org.ranapat.roots.api.Get
-import org.ranapat.roots.api.body
+import org.ranapat.roots.api.NormaliseResponse
+import org.ranapat.roots.api.Post
+import org.ranapat.roots.api.string
 import org.ranapat.roots.api.instance
+import org.ranapat.roots.api.jsonArray
+import org.ranapat.roots.api.jsonObject
 import org.ranapat.roots.converter.Converter
 import org.ranapat.roots.converter.instance
 import org.ranapat.roots.example.ui.theme.RootsTheme
@@ -44,59 +51,87 @@ class MainActivity : ComponentActivity(), Dispenser {
         listOf(
             Get
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/1")
-                .body()
+                .string()
                 .map { body ->
-                    Converter.from(body)
+                    Converter.fromJson(body)
                 },
             Get
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
-                .body()
+                .string()
                 .instance(ApiResponse::class.java),
             Get
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
-                .instance(ApiResponse::class.java)
-        )
-    }
-        /*Get.json(
-            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
-            ApiResponse::class.java,
-            normaliseResponse = object: NormaliseResponse<ApiResponse> {
-                override fun invoke(response: Response): ApiResponse {
-                    return toTyped(
-                        JSONArray(response.body?.string()).getJSONObject(0).toString(),
-                        ApiResponse::class.java
-                    )
+                .instance(ApiResponse::class.java),
+            Get
+                .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response")
+                .instance(object : NormaliseResponse<ApiResponse> {
+                    override fun invoke(from: String): ApiResponse {
+                        val json = JSONArray(from)
+                        return Converter.fromJson<ApiResponse>(json.getJSONObject(0).toString())
+                    }
+                }),
+            Get
+                .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response")
+                .jsonArray()
+                .map { json ->
+                    json.getJSONObject(0).toString()
                 }
-            }
-        )
-    }
-    private val getApiResponse1 by lazy {
-        Get.json(
-            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/1",
-            ApiResponse::class.java
-        )
-    }
-    private val getApiResponse2 by lazy {
-        Get.json(
-            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2"
-        ).like<ApiResponse>()
-    }
+                .map { jsonString ->
+                    Converter.fromJson<ApiResponse>(jsonString)
+                },
 
-    private val postApiResponse1 by lazy {
-        Post.json(
-            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
-            "{\"status\":\"predefined status (3)\", \"response\": \"predefined response (3)\"}",
-            ApiResponse::class.java,
-            "application/json; charset=utf-8".toMediaType()
+            Post
+                .from(
+                    "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
+                    "{\"status\":\"predefined status (3.1)\", \"response\": \"predefined response (3.1)\"}",
+                    "application/json; charset=utf-8".toMediaType()
+                )
+                .string()
+                .map { body ->
+                    Converter.fromJson(body)
+                },
+            Post
+                .from(
+                    "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
+                    "{\"status\":\"predefined status (3.2)\", \"response\": \"predefined response (3.2)\"}",
+                    "application/json; charset=utf-8".toMediaType()
+                )
+                .string()
+                .instance(ApiResponse::class.java),
+            Post
+                .from(
+                    "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
+                    "{\"status\":\"predefined status (3.3)\", \"response\": \"predefined response (3.3)\"}",
+                    "application/json; charset=utf-8".toMediaType()
+                )
+                .instance(ApiResponse::class.java),
+            Post
+                .from(
+                    "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
+                    "{\"status\":\"predefined status (3.4)\", \"response\": \"predefined response (3.4)\"}",
+                    "application/json; charset=utf-8".toMediaType()
+                )
+                .instance(object : NormaliseResponse<ApiResponse> {
+                    override fun invoke(from: String): ApiResponse {
+                        val json = JSONObject(from)
+                        return Converter.fromJson<ApiResponse>(json.toString())
+                    }
+                }),
+            Post
+                .from(
+                    "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
+                    "{\"status\":\"predefined status (3.5)\", \"response\": \"predefined response (3.5)\"}",
+                    "application/json; charset=utf-8".toMediaType()
+                )
+                .jsonObject()
+                .map { json ->
+                    json.toString()
+                }
+                .map { jsonString ->
+                    Converter.fromJson<ApiResponse>(jsonString)
+                },
         )
     }
-    private val postApiResponse2 by lazy {
-        Post.json(
-            "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response",
-            "{\"status\":\"predefined status (4)\", \"response\": \"predefined response (4)\"}",
-            "application/json; charset=utf-8".toMediaType()
-        ).like(ApiResponse::class.java)
-    }*/
 
     override val compositeDisposable
         get() = CompositeDisposable()

@@ -8,14 +8,13 @@ import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
 
-object Post {
-    /*
-    fun json(
+object Post : Base() {
+    fun from(
         url: String,
         content: String,
         mediaType: MediaType? = null,
-        okHttpClient: OkHttpClient? = null,
         headers: Map<String, String>? = null,
+        okHttpClient: OkHttpClient? = null,
     ): Maybe<Response> {
         return Maybe
             .fromCallable {
@@ -30,13 +29,4 @@ object Post {
             }
             .subscribeOn(Schedulers.io())
     }
-
-    fun <T : Any> json(
-        url: String, content: String, valueType: Class<T>,
-        mediaType: MediaType? = null,
-        okHttpClient: OkHttpClient? = null,
-        headers: Map<String, String>? = null,
-        normaliseResponse: NormaliseResponse<T>? = null
-    ): Maybe<T> = json(url, content, mediaType, okHttpClient, headers).like(valueType, normaliseResponse)
-    */
 }

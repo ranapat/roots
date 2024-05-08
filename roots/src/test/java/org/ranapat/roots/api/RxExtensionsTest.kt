@@ -19,6 +19,7 @@ import org.mockito.kotlin.doAnswer
 import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.ranapat.roots.converter.Converter
+import org.ranapat.roots.converter.fromJson
 
 @RunWith(MockitoJUnitRunner::class)
 class RxExtensionsTest {
@@ -196,7 +197,7 @@ class RxExtensionsTest {
         val testObserver: TestObserver<ApiResponse> = Maybe.just(response).instance(
             object : NormaliseResponse<ApiResponse> {
                 override fun invoke(from: String): ApiResponse {
-                    return Converter.fromJson(from)
+                    return fromJson(from)
                 }
             }
         ).test()

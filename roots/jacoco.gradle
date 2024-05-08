@@ -40,15 +40,10 @@ project.afterEvaluate {
                                 '**/*$ViewInjector*.*',
                                 '**/*$ViewBinder*.*',
                                 '**/BuildConfig.*',
-                                '**/Manifest*.*'
+                                '**/Manifest*.*',
+                                '**/Inline*.*',
                         ]
                 ))
-
-
-
-
-
-
 
                 classDirectories.setFrom(fileTree(
                         dir: "${project.buildDir}/intermediates/classes/${sourcePath}",
@@ -64,7 +59,8 @@ project.afterEvaluate {
                                 '**/*Module*',
                                 '**/*Component*',
                                 '**android**',
-                                '**/BR.class'
+                                '**/BR.class',
+                                '**/Inline*.*',
                         ]
                 ))
                 classDirectories.setFrom(fileTree(
@@ -81,7 +77,8 @@ project.afterEvaluate {
                                 '**/*Module*',
                                 '**/*Component*',
                                 '**android**',
-                                '**/BR.class'
+                                '**/BR.class',
+                                '**/Inline*.*',
                         ]
                 ))
                 def coverageSourceDirs = [

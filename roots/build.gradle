@@ -58,4 +58,7 @@ dependencies {
     testImplementation libs.mockk
     testImplementation libs.okhttp.mock.webserver
     testImplementation libs.json
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 }

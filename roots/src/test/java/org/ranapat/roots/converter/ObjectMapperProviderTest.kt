@@ -7,7 +7,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
-import org.ranapat.roots.converter.ObjectMapperProvider
 
 @RunWith(MockitoJUnitRunner::class)
 class ObjectMapperProviderTest {

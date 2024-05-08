@@ -31,11 +31,11 @@ import org.json.JSONObject
 import org.ranapat.roots.api.Get
 import org.ranapat.roots.api.NormaliseResponse
 import org.ranapat.roots.api.Post
-import org.ranapat.roots.api.string
 import org.ranapat.roots.api.instance
 import org.ranapat.roots.api.jsonArray
 import org.ranapat.roots.api.jsonObject
-import org.ranapat.roots.converter.Converter
+import org.ranapat.roots.api.string
+import org.ranapat.roots.converter.fromJson
 import org.ranapat.roots.converter.instance
 import org.ranapat.roots.example.ui.theme.RootsTheme
 import org.ranapat.roots.tools.Dispenser
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity(), Dispenser {
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/1")
                 .string()
                 .map { body ->
-                    Converter.fromJson(body)
+                    fromJson(body)
                 },
             Get
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
@@ -67,7 +67,7 @@ class MainActivity : ComponentActivity(), Dispenser {
                 .instance(object : NormaliseResponse<ApiResponse> {
                     override fun invoke(from: String): ApiResponse {
                         val json = JSONArray(from)
-                        return Converter.fromJson<ApiResponse>(json.getJSONObject(0).toString())
+                        return fromJson<ApiResponse>(json.getJSONObject(0).toString())
                     }
                 }),
             Get
@@ -77,7 +77,7 @@ class MainActivity : ComponentActivity(), Dispenser {
                     json.getJSONObject(0).toString()
                 }
                 .map { jsonString ->
-                    Converter.fromJson<ApiResponse>(jsonString)
+                    fromJson<ApiResponse>(jsonString)
                 },
 
             Post
@@ -88,7 +88,7 @@ class MainActivity : ComponentActivity(), Dispenser {
                 )
                 .string()
                 .map { body ->
-                    Converter.fromJson(body)
+                    fromJson(body)
                 },
             Post
                 .from(
@@ -114,7 +114,7 @@ class MainActivity : ComponentActivity(), Dispenser {
                 .instance(object : NormaliseResponse<ApiResponse> {
                     override fun invoke(from: String): ApiResponse {
                         val json = JSONObject(from)
-                        return Converter.fromJson<ApiResponse>(json.toString())
+                        return fromJson<ApiResponse>(json.toString())
                     }
                 }),
             Post
@@ -128,7 +128,7 @@ class MainActivity : ComponentActivity(), Dispenser {
                     json.toString()
                 }
                 .map { jsonString ->
-                    Converter.fromJson<ApiResponse>(jsonString)
+                    fromJson<ApiResponse>(jsonString)
                 },
         )
     }

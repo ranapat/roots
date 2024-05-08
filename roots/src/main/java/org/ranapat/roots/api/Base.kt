@@ -10,9 +10,7 @@ abstract class Base {
         }
     }
 
-    @Throws(
-        RequestNotSuccessfulException::class
-    )
+    @Throws(RequestNotSuccessfulException::class)
     protected fun ensureSuccessful(response: Response): Response {
         if (response.isSuccessful) {
             return response

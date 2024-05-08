@@ -7,9 +7,12 @@ import org.json.JSONObject
 import org.ranapat.roots.converter.instance
 
 fun Maybe<Response>.string(): Maybe<String> = map { response ->
-    response.body?.string() ?: throw RequestMissingBodyException(
-        response.request.url.toString(), Method.GET, response
-    )
+    response.body?.string()
+        ?: throw RequestMissingBodyException(
+            response.request.url.toString(),
+            Method.fromString(response.request.method),
+            response
+        )
 }
 fun Maybe<Response>.jsonObject(): Maybe<JSONObject> = string().map { body ->
     JSONObject(body)

@@ -3,6 +3,7 @@ package org.ranapat.roots.api
 import io.reactivex.rxjava3.observers.TestObserver
 import okhttp3.Call
 import okhttp3.HttpUrl
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
@@ -22,9 +23,10 @@ import org.mockito.kotlin.mock
 import java.io.IOException
 
 @RunWith(MockitoJUnitRunner::class)
-class GetJsonTest {
+class PostTest {
+
     @Test
-    fun `shall get from - case 1`() {
+    fun `shall post from - case 1`() {
         val server = MockWebServer()
         val baseUrl = server.url("")
         val response = "anything"
@@ -33,7 +35,7 @@ class GetJsonTest {
             MockResponse().setBody(response)
         )
 
-        val testObserver: TestObserver<Response> = Get.json(baseUrl.toString()).test()
+        val testObserver: TestObserver<Response> = Post.from(baseUrl.toString(), "").test()
         testObserver.await()
 
         testObserver.assertValueCount(1)
@@ -45,7 +47,7 @@ class GetJsonTest {
     }
 
     @Test
-    fun `shall get from - case 2`() {
+    fun `shall post from - case 2`() {
         val response: Response = mock {
             on { isSuccessful } doReturn true
         }
@@ -60,8 +62,10 @@ class GetJsonTest {
             }
         }
 
-        val testObserver: TestObserver<Response> = Get.json(
+        val testObserver: TestObserver<Response> = Post.from(
             "https://localhost",
+            "{}",
+            "application/json; charset=utf-8".toMediaType(),
             okHttpClient = okHttpClient
         ).test()
         testObserver.await()
@@ -73,7 +77,76 @@ class GetJsonTest {
     }
 
     @Test
-    fun `shall not get from - case 1`() {
+    fun `shall post from - case 3`() {
+        val response: Response = mock {
+            on { isSuccessful } doReturn true
+        }
+        val call: Call = mock {
+            on { execute() } doAnswer { _ ->
+                response
+            }
+        }
+        val okHttpClient: OkHttpClient = mock {
+            on { newCall(any<Request>()) } doAnswer {
+                val request: Request = it.arguments[0] as Request
+                assertThat(request.headers.size, `is`(equalTo(1)))
+                assertThat(request.headers["key1"], `is`(equalTo("value1")))
+
+                call
+            }
+        }
+
+        val testObserver: TestObserver<Response> = Post.from(
+            "https://localhost",
+            "",
+            headers = mapOf(
+                "key1" to "value1"
+            ),
+            okHttpClient = okHttpClient
+        ).test()
+        testObserver.await()
+
+        testObserver.assertValueCount(1)
+
+        val result = testObserver.values()[0]
+        assertThat(result, `is`(not(equalTo(null))))
+    }
+
+    @Test
+    fun `shall post from - case 4`() {
+        val response: Response = mock {
+            on { isSuccessful } doReturn true
+        }
+        val call: Call = mock {
+            on { execute() } doAnswer { _ ->
+                response
+            }
+        }
+        val okHttpClient: OkHttpClient = mock {
+            on { newCall(any<Request>()) } doAnswer {
+                val request: Request = it.arguments[0] as Request
+                assertThat(request.headers.size, `is`(equalTo(0)))
+
+                call
+            }
+        }
+
+        val testObserver: TestObserver<Response> = Post.from(
+            "https://localhost",
+            "",
+            headers = null,
+            okHttpClient = okHttpClient
+        ).test()
+        testObserver.await()
+
+        testObserver.assertValueCount(1)
+
+        val result = testObserver.values()[0]
+        assertThat(result, `is`(not(equalTo(null))))
+    }
+
+    @Test
+    fun `shall not post from - case 1`() {
         val server = MockWebServer()
         val baseUrl = server.url("")
         val response = "anything"
@@ -84,7 +157,7 @@ class GetJsonTest {
                 .setBody(response)
         )
 
-        val testObserver: TestObserver<Response> = Get.json(baseUrl.toString()).test()
+        val testObserver: TestObserver<Response> = Post.from(baseUrl.toString(), "").test()
         testObserver.await()
 
         testObserver.assertValueCount(0)
@@ -94,7 +167,7 @@ class GetJsonTest {
     }
 
     @Test
-    fun `shall not get from - case 2`() {
+    fun `shall not post from - case 2`() {
         val okHttpClient: OkHttpClient = mock {
             on { newCall(any<Request>()) } doAnswer { _ ->
                 throw IOException()
@@ -108,8 +181,9 @@ class GetJsonTest {
             MockResponse().setBody(response)
         )
 
-        val testObserver: TestObserver<Response> = Get.json(
+        val testObserver: TestObserver<Response> = Post.from(
             baseUrl.toString(),
+            "",
             okHttpClient = okHttpClient
         ).test()
         testObserver.await()
@@ -121,7 +195,7 @@ class GetJsonTest {
     }
 
     @Test
-    fun `shall not get from - case 3`() {
+    fun `shall not post from - case 3`() {
         val responseRequestUrl: HttpUrl = mock {
             on { toString() } doReturn "http://localhost"
         }
@@ -144,8 +218,9 @@ class GetJsonTest {
             }
         }
 
-        val testObserver: TestObserver<Response> = Get.json(
+        val testObserver: TestObserver<Response> = Post.from(
             "http://localhost",
+            "",
             okHttpClient = okHttpClient
         ).test()
         testObserver.await()

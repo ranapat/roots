@@ -47,6 +47,10 @@ class MainActivity : ComponentActivity(), Dispenser {
         @JsonProperty("status") val status: String,
         @JsonProperty("response") val response: String
     )
+
+    override val compositeDisposable
+        get() = CompositeDisposable()
+
     private val roots:List<Maybe<ApiResponse>> by lazy {
         listOf(
             Get
@@ -132,9 +136,6 @@ class MainActivity : ComponentActivity(), Dispenser {
                 },
         )
     }
-
-    override val compositeDisposable
-        get() = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

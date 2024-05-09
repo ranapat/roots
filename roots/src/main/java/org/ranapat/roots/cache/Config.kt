@@ -1,7 +1,6 @@
 package org.ranapat.roots.cache
 
 import android.content.Context
-import kotlin.String
 
 data class Config(
     val basePath: String,

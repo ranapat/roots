@@ -15,6 +15,7 @@ abstract class Base {
         if (response.isSuccessful) {
             return response
         } else {
+            response.close()
             throw RequestNotSuccessfulException(response.request.url.toString(), response)
         }
     }

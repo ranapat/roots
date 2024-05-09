@@ -1,6 +1,5 @@
 package org.ranapat.roots.api
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import okhttp3.HttpUrl
 import okhttp3.Request
 import okhttp3.Response
@@ -18,11 +17,6 @@ import org.mockito.kotlin.verify
 
 @RunWith(MockitoJUnitRunner::class)
 class BaseTest {
-    private class ApiResponse(
-        @JsonProperty("status") val status: String,
-        @JsonProperty("response") val response: String
-    )
-
     @Test
     fun `shall set headers`() {
         val builder: Request.Builder = mock()
@@ -71,6 +65,7 @@ class BaseTest {
         val result = instance.doEnsureSuccessful(response)
 
         assertThat(result, `is`(equalTo(response)))
+        verify(response, times(0)).close()
     }
 
     @Test(expected = RequestNotSuccessfulException::class)
@@ -93,5 +88,7 @@ class BaseTest {
         }
 
         instance.doEnsureSuccessful(response)
+
+        verify(response, times(1)).close()
     }
 }

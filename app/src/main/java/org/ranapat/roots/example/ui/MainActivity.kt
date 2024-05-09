@@ -35,6 +35,11 @@ import org.ranapat.roots.api.instance
 import org.ranapat.roots.api.jsonArray
 import org.ranapat.roots.api.jsonObject
 import org.ranapat.roots.api.string
+import org.ranapat.roots.cache.Cache
+import org.ranapat.roots.cache.Config
+import org.ranapat.roots.cache.CacheConfig
+import org.ranapat.roots.cache.cache
+import org.ranapat.roots.cache.instance
 import org.ranapat.roots.converter.fromJson
 import org.ranapat.roots.converter.instance
 import org.ranapat.roots.example.ui.theme.RootsTheme
@@ -44,8 +49,8 @@ import timber.log.Timber
 class MainActivity : ComponentActivity(), Dispenser {
     @JsonIgnoreProperties(ignoreUnknown = true)
     private class ApiResponse(
-        @JsonProperty("status") val status: String,
-        @JsonProperty("response") val response: String
+        @JsonProperty("status") val status: kotlin.String,
+        @JsonProperty("response") val response: kotlin.String
     )
 
     override val compositeDisposable
@@ -69,7 +74,7 @@ class MainActivity : ComponentActivity(), Dispenser {
             Get
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response")
                 .instance(object : NormaliseResponse<ApiResponse> {
-                    override fun invoke(from: String): ApiResponse {
+                    override fun invoke(from: kotlin.String): ApiResponse {
                         val json = JSONArray(from)
                         return fromJson<ApiResponse>(json.getJSONObject(0).toString())
                     }
@@ -116,7 +121,7 @@ class MainActivity : ComponentActivity(), Dispenser {
                     "application/json; charset=utf-8".toMediaType()
                 )
                 .instance(object : NormaliseResponse<ApiResponse> {
-                    override fun invoke(from: String): ApiResponse {
+                    override fun invoke(from: kotlin.String): ApiResponse {
                         val json = JSONObject(from)
                         return fromJson<ApiResponse>(json.toString())
                     }
@@ -134,11 +139,23 @@ class MainActivity : ComponentActivity(), Dispenser {
                 .map { jsonString ->
                     fromJson<ApiResponse>(jsonString)
                 },
+
+            Get
+                .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
+                .string()
+                .cache("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
+                .instance(ApiResponse::class.java)
         )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        CacheConfig.config = Config(
+            baseContext,
+            pathStructure = CacheConfig.PathStructure.NESTED
+        )
+
         setContent {
             RootsTheme {
                 Surface(
@@ -203,7 +220,7 @@ class MainActivity : ComponentActivity(), Dispenser {
 }
 
 @Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
+fun Greeting(name: kotlin.String, modifier: Modifier = Modifier) {
     Text(
         text = "Hello $name!",
         modifier = modifier

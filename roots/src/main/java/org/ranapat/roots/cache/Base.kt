@@ -23,7 +23,7 @@ abstract class Base {
         }
     }
 
-    protected fun ensureCacheFile(url: String): File? {
+    protected fun ensureCacheFileForWriting(url: String): File? {
         val config = ensureConfig()
 
         val cachePath: String
@@ -45,6 +45,15 @@ abstract class Base {
         val path = ensurePath(cachePath)
         return if (path != null) {
             File(path, cacheName)
+        } else {
+            null
+        }
+    }
+
+    protected fun ensureCacheFileForReading(url: String): File? {
+        val file = ensureCacheFileForWriting(url)
+        return if (file != null && file.exists()) {
+            file
         } else {
             null
         }

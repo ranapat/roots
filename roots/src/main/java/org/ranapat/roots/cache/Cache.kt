@@ -17,7 +17,7 @@ object Cache : Base() {
         return Maybe
             .fromCallable {
                 val normalisedCharset = charset ?: Charsets.UTF_8
-                val file = ensureCacheFile(url)
+                val file = ensureCacheFileForWriting(url)
 
                 var success = false
 
@@ -55,7 +55,7 @@ object Cache : Base() {
         return Maybe
             .fromCallable {
                 val normalisedCharset = charset ?: Charsets.UTF_8
-                val file = ensureCacheFile(url)
+                val file = ensureCacheFileForReading(url)
 
                 var success = false
                 var content: String? = null

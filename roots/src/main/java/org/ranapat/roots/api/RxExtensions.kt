@@ -23,14 +23,10 @@ fun Maybe<Response>.result(type: Result.Type?): Maybe<Result> = map { response -
                 ResponseTools.getEncoding(response) ?: Charsets.UTF_8
             )
         } else {
-            Result(
-                Result.Type.TEXT,
-                Result.Source.API,
-                false,
-                null,
-                null,
-                null,
-                null
+            throw RequestMissingBodyException(
+                response.request.url.toString(),
+                Method.fromString(response.request.method),
+                response
             )
         }
     } else {

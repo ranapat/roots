@@ -10,7 +10,7 @@ fun Maybe<String>.cache(url: String, charset: Charset? = null): Maybe<CacheResul
 
 fun <T: Any> Maybe<CacheResult>.instance(valueType: Class<T>): Maybe<T> = map { result ->
     if (result.success) {
-        Converter.fromJson(result.content, valueType)
+        Converter.fromJson(result.content!!, valueType)
     } else {
         throw CacheFailedException()
     }

@@ -1,9 +1,8 @@
 package org.ranapat.roots.cache
 
 object CacheConfig {
-    enum class PathStructure(val value: String) {
-        PLAIN("plain"),
-        NESTED("nested")
+    enum class PathStructure {
+        PLAIN, NESTED
     }
 
     const val DEFAULT_PREFIX = "/cache"

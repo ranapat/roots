@@ -35,6 +35,7 @@ import org.ranapat.roots.api.instance
 import org.ranapat.roots.api.jsonArray
 import org.ranapat.roots.api.jsonObject
 import org.ranapat.roots.api.string
+import org.ranapat.roots.cache.Cache
 import org.ranapat.roots.cache.CacheConfig
 import org.ranapat.roots.cache.Config
 import org.ranapat.roots.cache.cache
@@ -143,7 +144,10 @@ class MainActivity : ComponentActivity(), Dispenser {
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
                 .string()
                 .cache("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
-                .instance(ApiResponse::class.java)
+                .instance(ApiResponse::class.java),
+            Cache
+                .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
+                .instance(ApiResponse::class.java),
         )
     }
 

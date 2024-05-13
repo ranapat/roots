@@ -17,4 +17,6 @@ data class Result(
     enum class Source {
         API, CACHE
     }
+    class TypeNotImplementedException
+        : IllegalStateException("Type not implemented")
 }

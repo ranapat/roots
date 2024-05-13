@@ -4,8 +4,39 @@ import io.reactivex.rxjava3.core.Maybe
 import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
+import org.ranapat.roots.Result
 import org.ranapat.roots.converter.instance
+import java.nio.charset.Charset
+import java.util.Date
 
+fun Maybe<Response>.result(type: Result.Type?): Maybe<Result> = map { response ->
+    if (type == Result.Type.TEXT) {
+        val string = response.body?.string()
+        if (string != null) {
+            Result(
+                Result.Type.TEXT,
+                Result.Source.API,
+                true,
+                Date().time,
+                null,
+                string,
+                ResponseTools.getEncoding(response) ?: Charsets.UTF_8
+            )
+        } else {
+            Result(
+                Result.Type.TEXT,
+                Result.Source.API,
+                false,
+                null,
+                null,
+                null,
+                null
+            )
+        }
+    } else {
+        throw Result.TypeNotImplementedException()
+    }
+}
 fun Maybe<Response>.string(): Maybe<String> = map { response ->
     response.body?.string()
         ?: throw RequestMissingBodyException(

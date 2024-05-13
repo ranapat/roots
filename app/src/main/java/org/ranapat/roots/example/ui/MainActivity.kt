@@ -28,12 +28,14 @@ import io.reactivex.rxjava3.disposables.CompositeDisposable
 import okhttp3.MediaType.Companion.toMediaType
 import org.json.JSONArray
 import org.json.JSONObject
+import org.ranapat.roots.Result
 import org.ranapat.roots.api.Get
 import org.ranapat.roots.api.NormaliseResponse
 import org.ranapat.roots.api.Post
 import org.ranapat.roots.api.instance
 import org.ranapat.roots.api.jsonArray
 import org.ranapat.roots.api.jsonObject
+import org.ranapat.roots.api.result
 import org.ranapat.roots.api.string
 import org.ranapat.roots.cache.Cache
 import org.ranapat.roots.cache.CacheConfig
@@ -58,7 +60,7 @@ class MainActivity : ComponentActivity(), Dispenser {
 
     private val roots:List<Maybe<ApiResponse>> by lazy {
         listOf(
-            Get
+            /*Get
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/1")
                 .string()
                 .map { body ->
@@ -147,7 +149,14 @@ class MainActivity : ComponentActivity(), Dispenser {
                 .instance(ApiResponse::class.java),
             Cache
                 .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
-                .instance(ApiResponse::class.java),
+                .instance(ApiResponse::class.java),*/
+            Get
+                .from("https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/2")
+                .result(Result.Type.TEXT)
+                .map { result ->
+                    result.content!!
+                }
+                .instance(ApiResponse::class.java)
         )
     }
 

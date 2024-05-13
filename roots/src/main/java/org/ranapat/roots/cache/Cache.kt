@@ -2,6 +2,7 @@ package org.ranapat.roots.cache
 
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.schedulers.Schedulers
+import org.ranapat.roots.Result
 import java.io.BufferedReader
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -12,7 +13,7 @@ object Cache : Base() {
     fun to(
         url: String, content: String,
         charset: Charset? = null
-    ): Maybe<CacheResult> {
+    ): Maybe<Result> {
         return Maybe
             .fromCallable {
                 val normalisedCharset = charset ?: Charsets.UTF_8
@@ -35,12 +36,13 @@ object Cache : Base() {
                     }
                 }
 
-                return@fromCallable CacheResult(
+                return@fromCallable Result(
+                    Result.Type.TEXT,
+                    Result.Source.CACHE,
                     success,
                     file?.lastModified(),
                     file?.absolutePath,
                     content, normalisedCharset,
-                    CacheResult.Type.TEXT
                 )
             }
             .subscribeOn(Schedulers.io())
@@ -49,7 +51,7 @@ object Cache : Base() {
     fun from(
         url: String,
         charset: Charset? = null
-    ): Maybe<CacheResult> {
+    ): Maybe<Result> {
         return Maybe
             .fromCallable {
                 val normalisedCharset = charset ?: Charsets.UTF_8
@@ -86,12 +88,13 @@ object Cache : Base() {
                     }
                 }
 
-                return@fromCallable CacheResult(
+                return@fromCallable Result(
+                    Result.Type.TEXT,
+                    Result.Source.CACHE,
                     success,
                     file?.lastModified(),
                     file?.absolutePath,
                     content, normalisedCharset,
-                    CacheResult.Type.TEXT
                 )
             }
             .subscribeOn(Schedulers.io())

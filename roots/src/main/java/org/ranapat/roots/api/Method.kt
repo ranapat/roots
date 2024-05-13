@@ -2,12 +2,12 @@ package org.ranapat.roots.api
 
 import java.util.Locale
 
-enum class Method(val value: String) {
-    GET("GET"),
-    POST("POST"),
-    PUT("PUT"),
-    DELETE("DELETE"),
-    UNDEFINED("UNDEFINED");
+enum class Method {
+    GET,
+    POST,
+    PUT,
+    DELETE,
+    UNDEFINED;
 
     companion object {
         fun fromString(string: String): Method {

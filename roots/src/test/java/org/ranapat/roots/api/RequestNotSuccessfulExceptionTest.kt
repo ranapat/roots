@@ -17,7 +17,7 @@ class RequestNotSuccessfulExceptionTest {
     @Test
     fun `shall construct`() {
         val responseRequest = mock<Request> {
-            on { method } doReturn Method.GET.value
+            on { method } doReturn Method.GET.name
         }
         val response = mock<Response> {
             on { code } doReturn 400

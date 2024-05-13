@@ -11,14 +11,6 @@ import org.mockito.junit.MockitoJUnitRunner
 class MethodTest {
 
     @Test
-    fun `shall construct`() {
-        assertThat(Method.POST.value, `is`(equalTo("POST")))
-        assertThat(Method.GET.value, `is`(equalTo("GET")))
-        assertThat(Method.PUT.value, `is`(equalTo("PUT")))
-        assertThat(Method.DELETE.value, `is`(equalTo("DELETE")))
-    }
-
-    @Test
     fun `shall get from string`() {
         assertThat(Method.fromString("post"), `is`(equalTo(Method.POST)))
         assertThat(Method.fromString("POST"), `is`(equalTo(Method.POST)))

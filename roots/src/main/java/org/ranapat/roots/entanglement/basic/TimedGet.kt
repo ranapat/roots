@@ -1,4 +1,4 @@
-package org.ranapat.roots.entanglement.json
+package org.ranapat.roots.entanglement.basic
 
 import io.reactivex.rxjava3.core.Maybe
 import org.ranapat.roots.Result

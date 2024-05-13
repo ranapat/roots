@@ -27,7 +27,7 @@ import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import org.ranapat.roots.cache.CacheConfig
 import org.ranapat.roots.cache.Config
-import org.ranapat.roots.entanglement.json.TimedGet
+import org.ranapat.roots.entanglement.basic.TimedGet
 import org.ranapat.roots.example.ui.theme.RootsTheme
 import org.ranapat.roots.tools.Dispenser
 import timber.log.Timber

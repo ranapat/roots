@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import org.ranapat.roots.cache.CacheConfig
+import org.ranapat.roots.cache.CacheDetails
 import org.ranapat.roots.cache.Config
 import org.ranapat.roots.entanglement.basic.TimedGet
 import org.ranapat.roots.example.ui.theme.RootsTheme
@@ -153,9 +153,9 @@ class MainActivity : ComponentActivity(), Dispenser {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        CacheConfig.config = Config(
+        CacheDetails.config = CacheDetails.Config(
             baseContext,
-            pathStructure = CacheConfig.PathStructure.NESTED
+            pathStructure = CacheDetails.PathStructure.NESTED
         )
 
         setContent {

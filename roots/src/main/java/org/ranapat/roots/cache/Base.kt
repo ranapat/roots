@@ -5,12 +5,12 @@ import java.net.URI
 
 abstract class Base {
     @Throws(DefaultConfigNotSetException::class)
-    protected fun ensureConfig(): Config {
-        if (CacheConfig.config == null) {
+    protected fun ensureConfig(): CacheDetails.Config {
+        if (CacheDetails.config == null) {
             throw DefaultConfigNotSetException()
         }
 
-        return CacheConfig.config!!
+        return CacheDetails.config!!
     }
 
     protected fun ensurePath(path: String): File? = File(path).let {
@@ -29,7 +29,7 @@ abstract class Base {
         val cachePath: String
         val cacheName: String
 
-        if (config.pathStructure == CacheConfig.PathStructure.NESTED) {
+        if (config.pathStructure == CacheDetails.PathStructure.NESTED) {
             val uriPathParts = URI(
                 url.replace(" ".toRegex(), "_")
             ).path.split("/")

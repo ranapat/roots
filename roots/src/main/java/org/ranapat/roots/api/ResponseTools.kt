@@ -17,7 +17,7 @@ internal object ResponseTools {
         if (contentTypeCharsetMatcher.matches(contentType ?: "")) {
             try {
                 return Charset.forName(
-                    contentType?.replace(contentTypeCharsetMatcher, "$1")
+                    contentType!!.replace(contentTypeCharsetMatcher, "$1")
                 )
             } catch (e: Exception) {
                 //

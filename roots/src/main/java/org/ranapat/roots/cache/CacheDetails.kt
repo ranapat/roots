@@ -3,6 +3,8 @@ package org.ranapat.roots.cache
 import android.content.Context
 
 object CacheDetails {
+    const val DEFAULT_PREFIX = "/cache"
+
     enum class PathStructure {
         PLAIN, NESTED
     }
@@ -10,20 +12,18 @@ object CacheDetails {
     data class Config(
         val basePath: String,
         val prefix: String,
-        val pathStructure: CacheDetails.PathStructure
+        val pathStructure: PathStructure
     ) {
         constructor(
             context: Context,
             prefix: String? = null,
-            pathStructure: CacheDetails.PathStructure? = null
+            pathStructure: PathStructure? = null
         ) : this(
             context.filesDir.absolutePath,
-            prefix ?: CacheDetails.DEFAULT_PREFIX,
-            pathStructure ?: CacheDetails.PathStructure.PLAIN
+            prefix ?: DEFAULT_PREFIX,
+            pathStructure ?: PathStructure.PLAIN
         )
     }
-
-    const val DEFAULT_PREFIX = "/cache"
 
     var config: Config? = null
 }

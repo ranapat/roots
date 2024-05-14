@@ -17,6 +17,7 @@ import org.mockito.kotlin.verify
 
 @RunWith(MockitoJUnitRunner::class)
 class BaseTest {
+
     @Test
     fun `shall set headers`() {
         val builder: Request.Builder = mock()

@@ -10,18 +10,19 @@ internal object ResponseTools {
         try {
             return Charset.forName(response.headers["Content-Encoding"])
         } catch (e: Exception) {
-            //
+            e.printStackTrace()
         }
 
-        val contentType = response.headers["Content-Type"]
-        if (contentTypeCharsetMatcher.matches(contentType ?: "")) {
-            try {
-                return Charset.forName(
-                    contentType!!.replace(contentTypeCharsetMatcher, "$1")
-                )
-            } catch (e: Exception) {
-                //
+        try {
+            val contentType = response.headers["Content-Type"]
+            if (contentTypeCharsetMatcher.matches(contentType ?: "")) {
+                    return Charset.forName(
+                        contentType!!.replace(contentTypeCharsetMatcher, "$1")
+                    )
+
             }
+        } catch (e: Exception) {
+            e.printStackTrace()
         }
 
         return null

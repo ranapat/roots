@@ -6,7 +6,6 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.ranapat.roots.Result
 import org.ranapat.roots.converter.instance
-import java.nio.charset.Charset
 import java.util.Date
 
 fun Maybe<Response>.result(type: Result.Type?): Maybe<Result> = map { response ->
@@ -14,12 +13,8 @@ fun Maybe<Response>.result(type: Result.Type?): Maybe<Result> = map { response -
         val string = response.body?.string()
         if (string != null) {
             Result(
-                Result.Type.TEXT,
-                Result.Source.API,
-                true,
-                Date().time,
-                null,
-                string,
+                Result.Type.TEXT, Result.Source.API, true,
+                Date().time, null, string,
                 ResponseTools.getEncoding(response) ?: Charsets.UTF_8
             )
         } else {

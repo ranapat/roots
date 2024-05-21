@@ -8,6 +8,7 @@ import org.ranapat.roots.cache.Cache
 import org.ranapat.roots.cache.cache
 import org.ranapat.roots.converter.instance
 import org.ranapat.roots.entanglement.Base
+import org.ranapat.roots.entanglement.EntanglementFailedException
 import java.util.Date
 
 class TimedGet<T : Any> : Base<T> {
@@ -33,6 +34,11 @@ class TimedGet<T : Any> : Base<T> {
             }
             .concatWith(cache)
             .firstElement()
+            .doOnEvent { result, _ ->
+                if (!result!!.success) {
+                    throw EntanglementFailedException()
+                }
+            }
             .map { result ->
                 return@map result.content!!
             }

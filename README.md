@@ -16,6 +16,31 @@ More or less it is
 
 with every step optional and interchangeable.
 
+## Simple example
+
+Get or Cache locally
+
+```kotlin
+@JsonIgnoreProperties(ignoreUnknown = true)
+private class ApiResponse(
+    @JsonProperty("status") val status: String,
+    @JsonProperty("response") val response: String
+)
+
+val flow = TimedGet(
+    "https://663a13b71ae792804bedf83c.mockapi.io/api/v1/response/1",
+    ApiResponse::class.java,
+    TimeUnit.MINUTES.toMillis(1)
+).flow
+
+flow
+    .subscribe({ data ->
+        Timber.d("... ${data.status} ${data.response}")
+    }) { throwable ->
+        Timber.e("... $throwable")
+    }
+```
+
 ### More documentation coming up later ...
 
 ## Resources

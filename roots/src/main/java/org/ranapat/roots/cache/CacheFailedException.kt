@@ -1,4 +1,4 @@
 package org.ranapat.roots.cache
 
-class CacheFailedException()
+class CacheFailedException
     : IllegalStateException("Cache failed")

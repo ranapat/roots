@@ -41,6 +41,13 @@ flow
     }
 ```
 
+This will:
+
+- get from url and cache it locally
+- keep it for 1 minute
+- within 1 minute if requested again get it locally
+- after 1 minute re-get it again (and cache it again)
+
 ### More documentation coming up later ...
 
 ## Resources

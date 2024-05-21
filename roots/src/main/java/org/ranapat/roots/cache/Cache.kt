@@ -23,17 +23,18 @@ object Cache : Base() {
 
                 if (file != null) {
                     var fileOutputStream: FileOutputStream? = null
+
                     try {
                         fileOutputStream = FileOutputStream(file).also {
                             it.write(content.toByteArray(normalisedCharset))
-                            it.close()
                         }
+
                         success = true
                     } catch (e: Exception) {
-                        success = false
-                    } finally {
-                        fileOutputStream?.close()
+                        //
                     }
+
+                    fileOutputStream?.close()
                 }
 
                 return@fromCallable Result(
@@ -80,12 +81,12 @@ object Cache : Base() {
                         content = stringBuilder.toString()
                         success = true
                     } catch (exception: Exception) {
-                        success = false
-                    } finally {
-                        fileInputStream?.close()
-                        inputStreamReader?.close()
-                        bufferedReader?.close()
+                        //
                     }
+
+                    fileInputStream?.close()
+                    inputStreamReader?.close()
+                    bufferedReader?.close()
                 }
 
                 return@fromCallable Result(

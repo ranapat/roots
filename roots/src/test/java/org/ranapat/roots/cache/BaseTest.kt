@@ -75,6 +75,7 @@ class BaseTest {
         val path = instance.doEnsureCacheFileForWriting("https://domain.com/path1/path2/file")
         assertThat(path!!.absolutePath, `is`(equalTo("/tmp/_base_test_/_path1_path2_file")))
 
+        CacheDetails.config = null
         File("/tmp/_base_test_").deleteRecursively()
     }
 
@@ -97,6 +98,7 @@ class BaseTest {
         val path = instance.doEnsureCacheFileForWriting("https://domain.com/path1/path2/file")
         assertThat(path!!.absolutePath, `is`(equalTo("/tmp/_base_test_/path1/path2/file")))
 
+        CacheDetails.config = null
         File("/tmp/_base_test_").deleteRecursively()
     }
 
@@ -119,6 +121,7 @@ class BaseTest {
         val path = instance.doEnsureCacheFileForWriting("https://domain.com/path1/path2/../../../../root/file")
         assertThat(path, `is`(equalTo(null)))
 
+        CacheDetails.config = null
         File("/tmp/_base_test_").deleteRecursively()
     }
 
@@ -150,6 +153,7 @@ class BaseTest {
         val path = instance.doEnsureCacheFileForReading("https://domain.com/path1/path2/file")
         assertThat(path!!.absolutePath, `is`(equalTo("/tmp/_base_test_/_path1_path2_file")))
 
+        CacheDetails.config = null
         File("/tmp/_base_test_").deleteRecursively()
     }
 
@@ -181,6 +185,7 @@ class BaseTest {
         val path = instance.doEnsureCacheFileForReading("https://domain.com/path1/path2/file")
         assertThat(path!!.absolutePath, `is`(equalTo("/tmp/_base_test_/path1/path2/file")))
 
+        CacheDetails.config = null
         File("/tmp/_base_test_").deleteRecursively()
     }
 
@@ -203,6 +208,7 @@ class BaseTest {
         val path = instance.doEnsureCacheFileForReading("https://domain.com/path1/path2/file")
         assertThat(path, `is`(equalTo(null)))
 
+        CacheDetails.config = null
         File("/tmp/_base_test_").deleteRecursively()
     }
 
@@ -225,6 +231,7 @@ class BaseTest {
         val path = instance.doEnsureCacheFileForReading("https://domain.com/path1/path2/file")
         assertThat(path, `is`(equalTo(null)))
 
+        CacheDetails.config = null
         File("/tmp/_base_test_").deleteRecursively()
     }
 
@@ -247,6 +254,7 @@ class BaseTest {
         val path = instance.doEnsureCacheFileForReading("https://domain.com/path1/path2/../../../../root/file")
         assertThat(path, `is`(equalTo(null)))
 
+        CacheDetails.config = null
         File("/tmp/_base_test_").deleteRecursively()
     }
 

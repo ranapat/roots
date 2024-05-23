@@ -95,7 +95,7 @@ This will:
 - within 1 minute if requested again get it locally
 - after 1 minute re-get it again (and cache it again)
 
-### More documentation coming up later ...
+### More documentation coming up soon ...
 
 ## Resources
 

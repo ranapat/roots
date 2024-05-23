@@ -10,7 +10,7 @@ internal object ResponseTools {
         try {
             return Charset.forName(response.headers["Content-Encoding"])
         } catch (e: Exception) {
-            e.printStackTrace()
+            //
         }
 
         try {
@@ -22,7 +22,7 @@ internal object ResponseTools {
 
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            //
         }
 
         return null

@@ -1,6 +1,6 @@
 # roots
 
-[![Coverage Status](https://coveralls.io/repos/github/ranapat/roots/badge.svg?branch=main&rand=force-refresh)](https://coveralls.io/github/ranapat/roots?branch=main)
+[![Coverage Status](https://coveralls.io/repos/github/ranapat/roots/badge.svg?branch=main&release=latest)](https://coveralls.io/github/ranapat/roots?branch=main)
 
 Roots, bloody roots ...
 

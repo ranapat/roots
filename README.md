@@ -11,10 +11,57 @@ Rx based data flow.
 More or less it is
 
 ```
-(1) Api >> (2) Cache >> (3) Consume
+(1) Api >> (2) Cache >> (3) Consume >> (4) Something else
 ```
 
 with every step optional and interchangeable.
+
+## How to get it
+
+### Get latest from jitpack
+[![](https://jitpack.io/v/ranapat/roots.svg)](https://jitpack.io/#ranapat/roots)
+
+### Browser all from jitpack
+Access all jitpack builds [here](https://jitpack.io/#ranapat/roots).
+
+### Check the releases
+All releases are available [here](https://github.com/ranapat/roots/tags).
+
+### Get it from source
+Check out the repo and have fun.
+
+## Requirements
+* Java 17
+* Android SDK
+* Gradle
+
+## Building
+Build tool is gradle
+
+### Assemble
+Run `./gradlew assemble`
+
+### Run unit tests
+Run `./gradlew test`
+
+### Run lint
+Run `./gradlew lint`
+
+### Run jacoco tests
+Run `./gradlew testDebugUnitTestCoverage` or `./gradlew testReleaseUnitTestCoverage` or `./scripts/tests`
+
+### Outputs
+You can find the outputs here:
+- for the lint
+  `./roots/build/reports/lint-results-developmentDebug.html`
+- for the unit test coverage
+  `./roots/build/reports/jacoco/testDebugUnitTestCoverage/html/index.html` or `./instancefactory/build/reports/jacoco/testReleaseUnitTestCoverage/html/index.html`
+- for the unit test summary
+  `./roots/build/reports/tests/testDebugUnitTestCoverage/index.html` or `./instancefactory/build/reports/tests/testReleaseUnitTestCoverage/index.html`
+
+## Join the project
+If you find this project interesting check out the ongoing
+[issues](https://github.com/ranapat/roots/issues) and add your ides.
 
 ## Simple example
 

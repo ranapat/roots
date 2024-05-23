@@ -1,4 +1,9 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+    ext {
+        version_code = 1
+        version_name = "1.0.0 beta"
+    }
+}
 plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.jetbrainsKotlinAndroid) apply false

@@ -27,6 +27,8 @@ timber = "5.0.1"
 
 lombok = "1.18.32"
 
+androidExample = "1.0.1"
+
 [libraries]
 
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -67,6 +69,8 @@ json = { group = "org.json", name = "json", version.ref = "json" }
 timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 lombok = { group = "org.projectlombok", name = "lombok", version.ref = "lombok" }
+
+android-example = { group = "com.github.jitpack", name = "android-example", version.ref="androidExample" }
 
 [plugins]
 

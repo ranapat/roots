@@ -19,10 +19,6 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-dependencies {
-    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
-    implementation 'com.github.jitpack:android-example:1.0.1'
-}
 
 rootProject.name = "roots with Examples"
 include ':app'

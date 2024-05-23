@@ -58,6 +58,8 @@ dependencies {
 
     implementation libs.timber
 
+    implementation libs.android.example
+
     testImplementation libs.junit
     testImplementation libs.mockito.core
     testImplementation libs.mockito.kotlin
@@ -67,18 +69,4 @@ dependencies {
 
     compileOnly libs.lombok
     annotationProcessor libs.lombok
-}
-
-publishing {
-    publications {
-        release(MavenPublication) {
-            groupId = 'com.github.ranapat'
-            artifactId = 'roots'
-            version = version_name
-
-            afterEvaluate {
-                from components.release
-            }
-        }
-    }
 }

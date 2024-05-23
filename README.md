@@ -55,9 +55,9 @@ You can find the outputs here:
 - for the lint
   `./roots/build/reports/lint-results-developmentDebug.html`
 - for the unit test coverage
-  `./roots/build/reports/jacoco/testDebugUnitTestCoverage/html/index.html` or `./instancefactory/build/reports/jacoco/testReleaseUnitTestCoverage/html/index.html`
+  `./roots/build/reports/jacoco/testDebugUnitTestCoverage/html/index.html` or `./roots/build/reports/jacoco/testReleaseUnitTestCoverage/html/index.html`
 - for the unit test summary
-  `./roots/build/reports/tests/testDebugUnitTestCoverage/index.html` or `./instancefactory/build/reports/tests/testReleaseUnitTestCoverage/index.html`
+  `./roots/build/reports/tests/testDebugUnitTestCoverage/index.html` or `./roots/build/reports/tests/testReleaseUnitTestCoverage/index.html`
 
 ## Join the project
 If you find this project interesting check out the ongoing

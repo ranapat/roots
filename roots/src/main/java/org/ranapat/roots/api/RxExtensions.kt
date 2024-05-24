@@ -1,21 +1,26 @@
 package org.ranapat.roots.api
 
 import io.reactivex.rxjava3.core.Maybe
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Response
 import org.json.JSONArray
 import org.json.JSONObject
 import org.ranapat.roots.Result
 import org.ranapat.roots.converter.instance
+import org.ranapat.roots.tools.isApplicationJson
 import java.util.Date
 
-fun Maybe<Response>.result(type: Result.Type?): Maybe<Result> = map { response ->
-    if (type == Result.Type.TEXT) {
+fun Maybe<Response>.result(): Maybe<Result> = map { response ->
+    val mediaType = response.headers["Content-Type"]?.toMediaTypeOrNull()
+
+    if (mediaType?.isApplicationJson == true) {
         val string = response.body?.string()
         if (string != null) {
             Result(
-                Result.Type.TEXT, Result.Source.API, true,
-                Date().time, null, string,
-                ResponseTools.getEncoding(response) ?: Charsets.UTF_8
+                Result.Source.API, true,
+                Date().time, null,
+                mediaType, string
             )
         } else {
             throw RequestMissingBodyException(

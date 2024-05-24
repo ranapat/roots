@@ -24,6 +24,8 @@ import org.mockito.kotlin.mock
 import org.ranapat.roots.Result
 import org.ranapat.roots.converter.Converter
 import org.ranapat.roots.converter.fromJson
+import org.ranapat.roots.tools.value
+import java.nio.charset.Charset
 
 @RunWith(MockitoJUnitRunner::class)
 class RxExtensionsTest {
@@ -47,19 +49,19 @@ class RxExtensionsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val testObserver: TestObserver<Result> = Maybe.just(response).result(Result.Type.TEXT).test()
+        val testObserver: TestObserver<Result> = Maybe.just(response).result().test()
         testObserver.await()
 
         testObserver.assertValueCount(1)
 
         val result = testObserver.values()[0]
-        assertThat(result.type, `is`(equalTo(Result.Type.TEXT)))
         assertThat(result.source, `is`(equalTo(Result.Source.API)))
         assertThat(result.success, `is`(equalTo(true)))
         assertThat(result.lastModified, `is`(not(equalTo(null))))
         assertThat(result.location, `is`(equalTo(null)))
+        assertThat(result.mediaType?.value, `is`(equalTo("application/json")))
+        assertThat(result.mediaType?.charset(), `is`(equalTo(Charset.forName("windows-1251"))))
         assertThat(result.content, `is`(equalTo("{\"status\": \"ok\",\"response\": \"good\"}")))
-        assertThat(result.encoding!!.name(), `is`(equalTo("windows-1251")))
     }
 
     @Test
@@ -77,19 +79,19 @@ class RxExtensionsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val testObserver: TestObserver<Result> = Maybe.just(response).result(Result.Type.TEXT).test()
+        val testObserver: TestObserver<Result> = Maybe.just(response).result().test()
         testObserver.await()
 
         testObserver.assertValueCount(1)
 
         val result = testObserver.values()[0]
-        assertThat(result.type, `is`(equalTo(Result.Type.TEXT)))
         assertThat(result.source, `is`(equalTo(Result.Source.API)))
         assertThat(result.success, `is`(equalTo(true)))
         assertThat(result.lastModified, `is`(not(equalTo(null))))
         assertThat(result.location, `is`(equalTo(null)))
+        assertThat(result.mediaType?.value, `is`(equalTo("application/json")))
+        assertThat(result.mediaType?.charset(), `is`(equalTo(null)))
         assertThat(result.content, `is`(equalTo("{\"status\": \"ok\",\"response\": \"good\"}")))
-        assertThat(result.encoding, `is`(equalTo(Charsets.UTF_8)))
     }
 
     @Test
@@ -100,34 +102,38 @@ class RxExtensionsTest {
             }
         }
         val responseHeaders: Headers = mock {
-            on { get(any<String>()) } doReturn null
+            on { get("Content-Type") } doReturn "application/json"
         }
         val response: Response = mock {
             on { body } doReturn responseBody
             on { headers } doReturn responseHeaders
         }
 
-        val testObserver: TestObserver<Result> = Maybe.just(response).result(Result.Type.TEXT).test()
+        val testObserver: TestObserver<Result> = Maybe.just(response).result().test()
         testObserver.await()
 
         testObserver.assertValueCount(1)
 
         val result = testObserver.values()[0]
-        assertThat(result.type, `is`(equalTo(Result.Type.TEXT)))
         assertThat(result.source, `is`(equalTo(Result.Source.API)))
         assertThat(result.success, `is`(equalTo(true)))
         assertThat(result.lastModified, `is`(not(equalTo(null))))
         assertThat(result.location, `is`(equalTo(null)))
+        assertThat(result.mediaType?.value, `is`(equalTo("application/json")))
+        assertThat(result.mediaType?.charset(), `is`(equalTo(null)))
         assertThat(result.content, `is`(equalTo("{\"status\": \"ok\",\"response\": \"good\"}")))
-        assertThat(result.encoding, `is`(equalTo(Charsets.UTF_8)))
     }
 
     @Test
     fun `shall not get result - case 1`() {
+        val responseHeaders: Headers = mock {
+            on { get(any<String>()) } doReturn null
+        }
         val response: Response = mock {
+            on { headers } doReturn responseHeaders
         }
 
-        val testObserver: TestObserver<Result> = Maybe.just(response).result(null).test()
+        val testObserver: TestObserver<Result> = Maybe.just(response).result().test()
         testObserver.await()
 
         testObserver.assertValueCount(0)
@@ -136,6 +142,22 @@ class RxExtensionsTest {
 
     @Test
     fun `shall not get result - case 2`() {
+        val responseHeaders: Headers = mock {
+            on { get("Content-Type") } doReturn "octet/stream"
+        }
+        val response: Response = mock {
+            on { headers } doReturn responseHeaders
+        }
+
+        val testObserver: TestObserver<Result> = Maybe.just(response).result().test()
+        testObserver.await()
+
+        testObserver.assertValueCount(0)
+        testObserver.assertError(Result.TypeNotImplementedException::class.java)
+    }
+
+    @Test
+    fun `shall not get result - case 3`() {
         val requestResponseUrl: HttpUrl = mock {
             on { toString() } doReturn "url"
         }
@@ -148,20 +170,28 @@ class RxExtensionsTest {
                 null
             }
         }
+        val responseHeaders: Headers = mock {
+            on { get("Content-Type") } doReturn "application/json; charset=windows-1251"
+        }
         val response: Response = mock {
+            on { headers } doReturn responseHeaders
             on { body } doReturn responseBody
             on { request } doReturn responseRequest
         }
 
-        val testObserver: TestObserver<Result> = Maybe.just(response).result(Result.Type.TEXT).test()
+        val testObserver: TestObserver<Result> = Maybe.just(response).result().test()
         testObserver.await()
 
         testObserver.assertValueCount(0)
         testObserver.assertError(RequestMissingBodyException::class.java)
+        testObserver.assertError {
+            val throwable = it as RequestMissingBodyException
+            throwable.url == "url" && throwable.method == Method.GET && throwable.response == response
+        }
     }
 
     @Test
-    fun `shall not get result - case 3`() {
+    fun `shall not get result - case 4`() {
         val requestResponseUrl: HttpUrl = mock {
             on { toString() } doReturn "url"
         }
@@ -169,16 +199,24 @@ class RxExtensionsTest {
             on { url } doReturn requestResponseUrl
             on { method } doReturn "GET"
         }
+        val responseHeaders: Headers = mock {
+            on { get("Content-Type") } doReturn "application/json; charset=windows-1251"
+        }
         val response: Response = mock {
+            on { headers } doReturn responseHeaders
             on { body } doReturn null
             on { request } doReturn responseRequest
         }
 
-        val testObserver: TestObserver<Result> = Maybe.just(response).result(Result.Type.TEXT).test()
+        val testObserver: TestObserver<Result> = Maybe.just(response).result().test()
         testObserver.await()
 
         testObserver.assertValueCount(0)
         testObserver.assertError(RequestMissingBodyException::class.java)
+        testObserver.assertError {
+            val throwable = it as RequestMissingBodyException
+            throwable.url == "url" && throwable.method == Method.GET && throwable.response == response
+        }
     }
 
     @Test

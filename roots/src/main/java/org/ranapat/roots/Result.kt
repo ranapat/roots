@@ -1,22 +1,24 @@
 package org.ranapat.roots
 
-import java.nio.charset.Charset
+import okhttp3.MediaType
 
 data class Result(
-    val type: Type,
     val source: Source,
     val success: Boolean,
     val lastModified: Long?,
     val location: String?,
-    val content: String?,
-    val encoding: Charset?,
+    val mediaType: MediaType?,
+    val content: Any?,
 ) {
-    enum class Type {
-        TEXT
-    }
     enum class Source {
         API, CACHE
     }
     class TypeNotImplementedException
         : IllegalStateException("Type not implemented")
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> contentOrNull(): T? = content as? T
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> contentValue(): T = content as T
 }

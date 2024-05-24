@@ -1,6 +1,7 @@
 package org.ranapat.roots.entanglement.basic
 
 import io.reactivex.rxjava3.core.Maybe
+import okhttp3.MediaType.Companion.toMediaType
 import org.ranapat.roots.Result
 import org.ranapat.roots.api.Get
 import org.ranapat.roots.api.result
@@ -11,14 +12,17 @@ import org.ranapat.roots.entanglement.Base
 import org.ranapat.roots.entanglement.EntanglementFailedException
 import java.util.Date
 
-class TimedGet<T : Any> : Base<T> {
+class TimedGet<T : Any>(
+    url: String, valueType: Class<T>,
+    ttl: Long
+) : Base<T>() {
     private val _flow: Maybe<T>
 
-    constructor(url: String, valueType: Class<T>, ttl: Long): super() {
+    init {
         val api = Get.from(url)
-            .result(Result.Type.TEXT)
+            .result()
             .map { result ->
-                result.content!!
+                result.contentValue<String>()
             }
             .cache(url)
             .onErrorResumeNext {
@@ -26,7 +30,6 @@ class TimedGet<T : Any> : Base<T> {
             }
         val cache = Cache
             .from(url)
-
         _flow = Maybe
             .concat(cache, api)
             .filter { result: Result ->
@@ -40,7 +43,7 @@ class TimedGet<T : Any> : Base<T> {
                 }
             }
             .map { result ->
-                return@map result.content!!
+                return@map result.contentValue<String>()
             }
             .instance(valueType)
     }

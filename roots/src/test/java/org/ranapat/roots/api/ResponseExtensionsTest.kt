@@ -13,7 +13,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 
 @RunWith(MockitoJUnitRunner::class)
-class ResponseToolsTest {
+class ResponseExtensionsTest {
 
     @Test
     fun `shall get encoding from response - case 1`() {
@@ -24,7 +24,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(Charsets.UTF_8)))
     }
@@ -38,7 +38,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(Charsets.UTF_8)))
     }
@@ -52,7 +52,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(null)))
     }
@@ -66,7 +66,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(null)))
     }
@@ -80,7 +80,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(null)))
     }
@@ -94,7 +94,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(null)))
     }
@@ -108,7 +108,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(null)))
     }
@@ -122,7 +122,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(null)))
     }
@@ -136,7 +136,7 @@ class ResponseToolsTest {
             on { headers } doReturn responseHeaders
         }
 
-        val encoding = ResponseTools.getEncoding(response)
+        val encoding = response.encoding
 
         assertThat(encoding, `is`(equalTo(null)))
     }

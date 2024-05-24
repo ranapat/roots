@@ -142,6 +142,22 @@ class RxExtensionsTest {
 
     @Test
     fun `shall not get result - case 2`() {
+        val responseHeaders: Headers = mock {
+            on { get("Content-Type") } doReturn "octet/stream"
+        }
+        val response: Response = mock {
+            on { headers } doReturn responseHeaders
+        }
+
+        val testObserver: TestObserver<Result> = Maybe.just(response).result().test()
+        testObserver.await()
+
+        testObserver.assertValueCount(0)
+        testObserver.assertError(Result.TypeNotImplementedException::class.java)
+    }
+
+    @Test
+    fun `shall not get result - case 3`() {
         val requestResponseUrl: HttpUrl = mock {
             on { toString() } doReturn "url"
         }
@@ -175,7 +191,7 @@ class RxExtensionsTest {
     }
 
     @Test
-    fun `shall not get result - case 3`() {
+    fun `shall not get result - case 4`() {
         val requestResponseUrl: HttpUrl = mock {
             on { toString() } doReturn "url"
         }

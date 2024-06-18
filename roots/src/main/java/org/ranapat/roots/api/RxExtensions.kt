@@ -1,7 +1,6 @@
 package org.ranapat.roots.api
 
 import io.reactivex.rxjava3.core.Maybe
-import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.Response
 import org.json.JSONArray

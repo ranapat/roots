@@ -11,7 +11,7 @@ data class Result(
     val content: Any?,
 ) {
     enum class Source {
-        API, CACHE
+        API, CACHE, UNDEFINED
     }
     class TypeNotImplementedException
         : IllegalStateException("Type not implemented")

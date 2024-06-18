@@ -1,13 +1,12 @@
 package org.ranapat.roots.entanglement.basic
 
 import io.reactivex.rxjava3.core.Maybe
-import okhttp3.MediaType.Companion.toMediaType
 import org.ranapat.roots.Result
 import org.ranapat.roots.api.Get
 import org.ranapat.roots.api.result
 import org.ranapat.roots.cache.Cache
 import org.ranapat.roots.cache.cache
-import org.ranapat.roots.converter.instance
+import org.ranapat.roots.converter.StringConverter.instance
 import org.ranapat.roots.entanglement.Base
 import org.ranapat.roots.entanglement.EntanglementFailedException
 import java.util.Date

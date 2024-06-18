@@ -9,6 +9,9 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
+import org.ranapat.roots.Result
+import org.ranapat.roots.converter.ResultConverter.instance
+import org.ranapat.roots.converter.StringConverter.instance
 
 @RunWith(MockitoJUnitRunner::class)
 class RxExtensionsTest {
@@ -18,7 +21,7 @@ class RxExtensionsTest {
     )
 
     @Test
-    fun `shall get instance - case 1`() {
+    fun `shall get instance from string- case 1`() {
         val testObserver: TestObserver<ApiResponse> = Maybe.just("{\"status\": \"ok\",\"response\": \"good\"}").instance(ApiResponse::class.java).test()
         testObserver.await()
 
@@ -27,6 +30,35 @@ class RxExtensionsTest {
         val result = testObserver.values()[0]
         assertThat(result.status, `is`(equalTo("ok")))
         assertThat(result.response, `is`(equalTo("good")))
+    }
+
+    @Test
+    fun `shall get instance from result - case 1`() {
+        val testObserver: TestObserver<ApiResponse> = Maybe.just(Result(
+            Result.Source.UNDEFINED,
+            true, null, null, null,
+            "{\"status\": \"ok\",\"response\": \"good\"}"
+        )).instance(ApiResponse::class.java).test()
+        testObserver.await()
+
+        testObserver.assertValueCount(1)
+
+        val result = testObserver.values()[0]
+        assertThat(result.status, `is`(equalTo("ok")))
+        assertThat(result.response, `is`(equalTo("good")))
+    }
+
+    @Test
+    fun `shall not get instance from result - case 1`() {
+        val testObserver: TestObserver<ApiResponse> = Maybe.just(Result(
+            Result.Source.UNDEFINED,
+            false, null, null, null,
+            "{\"status\": \"ok\",\"response\": \"good\"}"
+        )).instance(ApiResponse::class.java).test()
+        testObserver.await()
+
+        testObserver.assertValueCount(0)
+        testObserver.assertError(ConvertFailedException::class.java)
     }
 
 }

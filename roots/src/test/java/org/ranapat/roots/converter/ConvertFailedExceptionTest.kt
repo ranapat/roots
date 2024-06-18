@@ -1,4 +1,4 @@
-package org.ranapat.roots.cache
+package org.ranapat.roots.converter
 
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.`is`
@@ -8,13 +8,13 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 
 @RunWith(MockitoJUnitRunner::class)
-class CacheFailedExceptionTest {
+class ConvertFailedExceptionTest {
 
     @Test
     fun `shall construct`() {
-        val exception = CacheFailedException()
+        val exception = ConvertFailedException()
 
-        assertThat(exception.message, `is`(equalTo("Cache failed")))
+        assertThat(exception.message, `is`(equalTo("Convert failed")))
     }
 
 }

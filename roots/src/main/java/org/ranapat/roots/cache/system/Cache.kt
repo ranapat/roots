@@ -1,8 +1,9 @@
-package org.ranapat.roots.cache
+package org.ranapat.roots.cache.system
 
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.schedulers.Schedulers
 import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaType
 import org.ranapat.roots.Result
 import java.io.BufferedReader
 import java.io.FileInputStream
@@ -16,7 +17,16 @@ object Cache : Base() {
     ): Maybe<Result> {
         return Maybe
             .fromCallable {
-                val normalisedCharset = mediaType?.charset() ?: Charsets.UTF_8
+                val normalisedMediaType = when {
+                    mediaType?.charset() != null -> mediaType
+                    mediaType != null -> "text/plain; charset=UTF-8".toMediaType()
+                    else -> null
+                }
+                val normalisedCharset = if (normalisedMediaType != null) {
+                    normalisedMediaType.charset()!!
+                } else {
+                    Charsets.UTF_8
+                }
                 val file = ensureCacheFileForWriting(url)
 
                 var success = false
@@ -42,7 +52,7 @@ object Cache : Base() {
                     success,
                     file?.lastModified(),
                     file?.absolutePath,
-                    mediaType, content
+                    normalisedMediaType, content
                 )
             }
             .subscribeOn(Schedulers.io())
@@ -54,7 +64,16 @@ object Cache : Base() {
     ): Maybe<Result> {
         return Maybe
             .fromCallable {
-                val normalisedCharset = mediaType?.charset() ?: Charsets.UTF_8
+                val normalisedMediaType = when {
+                    mediaType?.charset() != null -> mediaType
+                    mediaType != null -> "text/plain; charset=UTF-8".toMediaType()
+                    else -> null
+                }
+                val normalisedCharset = if (normalisedMediaType != null) {
+                    normalisedMediaType.charset()!!
+                } else {
+                    Charsets.UTF_8
+                }
                 val file = ensureCacheFileForReading(url)
 
                 var success = false
@@ -93,7 +112,7 @@ object Cache : Base() {
                     success,
                     file?.lastModified(),
                     file?.absolutePath,
-                    mediaType, content
+                    normalisedMediaType, content
                 )
             }
             .subscribeOn(Schedulers.io())

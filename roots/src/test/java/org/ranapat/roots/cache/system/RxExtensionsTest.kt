@@ -1,20 +1,12 @@
-package org.ranapat.roots.cache
+package org.ranapat.roots.cache.system
 
-import android.content.Context
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.reactivex.rxjava3.core.Maybe
-import io.reactivex.rxjava3.observers.TestObserver
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.not
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.ranapat.roots.Result
-import java.io.File
 
 @RunWith(MockitoJUnitRunner::class)
 class RxExtensionsTest {

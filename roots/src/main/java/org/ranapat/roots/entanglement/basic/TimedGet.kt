@@ -4,8 +4,8 @@ import io.reactivex.rxjava3.core.Maybe
 import org.ranapat.roots.Result
 import org.ranapat.roots.api.Get
 import org.ranapat.roots.api.result
-import org.ranapat.roots.cache.Cache
-import org.ranapat.roots.cache.cache
+import org.ranapat.roots.cache.system.Cache
+import org.ranapat.roots.cache.system.cache
 import org.ranapat.roots.converter.StringConverter.instance
 import org.ranapat.roots.entanglement.Base
 import org.ranapat.roots.entanglement.EntanglementFailedException

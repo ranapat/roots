@@ -1,32 +1,11 @@
 package org.ranapat.roots.entanglement.basic
 
-import android.content.Context
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
-import io.reactivex.rxjava3.observers.TestObserver
-import okhttp3.Call
-import okhttp3.HttpUrl
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
-import okhttp3.mockwebserver.MockResponse
-import okhttp3.mockwebserver.MockWebServer
 import org.hamcrest.CoreMatchers.equalTo
 import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.CoreMatchers.not
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.junit.MockitoJUnitRunner
-import org.mockito.kotlin.any
-import org.mockito.kotlin.doAnswer
-import org.mockito.kotlin.doReturn
-import org.mockito.kotlin.mock
-import org.ranapat.roots.cache.Cache
-import org.ranapat.roots.cache.CacheDetails
-import org.ranapat.roots.entanglement.EntanglementFailedException
-import java.io.File
-import java.io.IOException
 
 class TimedGetTest {
     @JsonIgnoreProperties(ignoreUnknown = true)

@@ -25,7 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Maybe
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import org.ranapat.roots.cache.CacheDetails
+import org.ranapat.roots.cache.system.CacheDetails
 import org.ranapat.roots.entanglement.basic.TimedGet
 import org.ranapat.roots.example.ui.theme.RootsTheme
 import org.ranapat.roots.tools.Dispenser
